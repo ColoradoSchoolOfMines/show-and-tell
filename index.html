@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>ACM TV Upload</title>
+    <!--[if IE]>
+        <link href="resources/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <link href="resources/css/print.css" media="print" rel="stylesheet" type="text/css" />
+    <link href="resources/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1>Upload your cool CS project for display on the ACM TV in Brown Building</h1>
+    <hr>
+
+    <form action="" method="post">
+        <fieldset>
+            <legend>Your Information</legend>
+
+            <div class="required">
+                <label for="name">Name</label>
+                <input id="name" type="text" />
+            </div>
+            <div class="required">
+                <label for="email">Email</label>
+                <input id="email" type="email" />
+            </div>
+            <div>
+                <label for="major">Major</label>
+                <input id="major" type="text" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Project Information</legend>
+            <div class="required">
+                <label for="project">Project Name</label>
+                <input id="project" type="text" />
+            </div>
+            <div class="required">
+                <label for="project_description">Project Description</label>
+                <textarea id="project_description"></textarea>
+            </div>
+        </fieldset>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>
