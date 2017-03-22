@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-@import "compass/reset";
+//@import "compass/reset";
 
 form fieldset {
     display: table;
@@ -11,26 +11,28 @@ form fieldset {
     margin: 10px;
 
     div {
+        margin: 10px;
         display: table-row;
 
         label {
-            padding: 0 10px;
+            padding: 10px;
             display: table-cell;
             text-align: right;
-            vertical-align: top;
+            vertical-align: middle;
 
             &:after {
                 content: ':';
             }
         }
 
-        input {
-            display: table-cell;
-        }
-
         &.required label:before {
             content: '* ';
             color: red;
+        }
+
+        input, select, textarea {
+            display: table-cell;
+            margin: 10px;
         }
     }
 }
