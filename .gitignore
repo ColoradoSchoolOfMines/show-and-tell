@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/vim,sass,less,linux,windows,macos,node,visualstudiocode
+# Created by https://www.gitignore.io/api/vim,sass,less,linux,windows,macos,node,visualstudiocode,turbogears2
 
 ### Less ###
 *.css
@@ -112,6 +112,28 @@ typings/
 .sass-cache/
 *.css.map
 
+### TurboGears2 ###
+*.py[co]
+
+# Default development database
+devdata.db
+
+# Default data directory
+data/*
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
 ### Vim ###
 # swap
 [._]*.s[a-v][a-z]
@@ -153,4 +175,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/vim,sass,less,linux,windows,macos,node,visualstudiocode
+# End of https://www.gitignore.io/api/vim,sass,less,linux,windows,macos,node,visualstudiocode,turbogears2
