@@ -6,6 +6,11 @@ from datetime import datetime
 
 log = logging.getLogger(__name__)
 
+def app_name():
+    return 'Show and Tell'
+
+def copyright_holder():
+    return 'Mines ACM Chapter'
 
 def current_year():
     now = datetime.now()
