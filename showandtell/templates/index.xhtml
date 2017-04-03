@@ -1,6 +1,6 @@
 <html py:extends="master.xhtml" py:strip="True">
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${h.app_name()} - Welcome</title>
+        <title py:block="master_title">${h.app_name()} - Home</title>
     </head>
 
     <body py:block="body" py:strip="True">
@@ -14,9 +14,24 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row boxed">
+            <div class="col-md-12 header">
+                <h1>For Students</h1>
+            </div>
             <div class="col-md-4">
-                <h3>Submit your Project</h3>
+                <h3>1. Build a Cool Project</h3>
+                <p>
+                If you need inspiration, head over to the ACM TV in Brown
+                Building West.
+                </p>
+                <p class="coming-soon">
+                We also have a web interface for seeing students' projects
+                online.
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <h3>2. Submit Your Project</h3>
                 <p>
                 We support the following types of projects:
                 <ul>
@@ -34,17 +49,23 @@
             </div>
 
             <div class="col-md-4">
-                <h3>Design your URL architecture</h3>
-                <p> Decide your URLs, Program your <code>controller</code> methods, Design your
-                <code>templates</code>, and place some static files (CSS and/or Javascript). </p>
-            </div>
-
-            <div class="col-md-4">
-                <h3>Distribute your app</h3>
-                <p> Test your source, Generate project documents, Build a distribution.</p>
+                <h3>3. Be Famous</h3>
+                <p>
+                We will show your project on the ACM TV in Brown Building West
+                for everyone to see your awesome work.
+                </p>
+                <p class="coming-soon">
+                People can also view your poject in the web interface.
+                </p>
             </div>
         </div>
 
-        <em class="pull-right small"> Thank you for choosing TurboGears.</em>
+        <!-- TODO: Do this someday
+        <div class="row boxed">
+            <div class="col-md-12 header">
+                <h1>For Advertisers</h1>
+            </div>
+        </div>
+        -->
     </body>
 </html>
