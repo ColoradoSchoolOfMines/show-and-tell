@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-""" Login Module """
+""" Login Controller """
 
 from bottle import route, get, post, request, redirect
 import kajiki
@@ -42,6 +42,7 @@ def logout():
 
 def multipass_auth(username, password):
     """ Authenticate using MultiPass via Jack Rosenthal's Unofficial API """
+
     mpapi_base = showandtell.helpers.util.from_config_yaml('mpapi_base')
     auth_request = requests.post(urllib.parse.urljoin(mpapi_base, 'auth'), data={
         'username': username,

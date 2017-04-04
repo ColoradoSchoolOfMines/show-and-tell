@@ -5,7 +5,7 @@ Asset Model
 """
 
 from showandtell.db import DeclarativeBase, session
-from sqlalchemy import Column, Integer, String, Binary
+from sqlalchemy import Column, Integer, String, Binary, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -14,7 +14,12 @@ class Asset:
 
     # Fields
     asset_id = Column(Integer, autoincrement=True, primary_key=True)
-    project_id = Column(Integer)
+
+    # TODO: we need to have one and only one of these
+    project_id = Column(Integer, ForeignKey('t_projects.project_id'))
+    team_id = Column(Integer, ForeignKey('t_teams.team_id'))
+    person_id = Column(Integer, ForeignKey('t_people.user_id'))
+
     name = Column(String, nullable=False)
     type = Column(String, nullable=False)
     data = Column(Binary, nullable=False)

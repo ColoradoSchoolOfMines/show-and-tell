@@ -5,7 +5,7 @@ Session Model
 """
 
 from showandtell.db import DeclarativeBase, session
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -16,6 +16,7 @@ class Session:
     session_id = Column(Integer, autoincrement=True, primary_key=True)
     expires_on = Column(DateTime, autoincrement=True, primary_key=True)
     session_cookie = Column(String, nullable=False) # Cookie for the Session
+    user_id = Column(Integer, ForeignKey('t_people.user_id'))
 
     # Relationships
-
+    user = relationship('Person')
