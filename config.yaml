@@ -1,0 +1,2 @@
+db: postgresql://youruser:yourpass@flowers.Mines.EDU/csci403
+mpapi_base: https://mastergo.mines.edu/mpapi/

@@ -4,8 +4,20 @@
 Project Model
 """
 
-from sqlalchemy import Table, ForeignKey, Column
-from sqlalchemy.types import Unicode, Integer, DateTime, Text
-from sqlalchemy.orm import relation, synonym
+from showandtell.db import DeclarativeBase
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
-project_table = Table('sat_project')
+
+class Project(DeclarativeBase):
+    __tablename__ = 't_projects'
+
+    # Fields
+    project_id = Column(Integer, autoincrement=True, primary_key=True)
+    type = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    name = Column(String, unique=True, nullable=False)
+    website = Column(String)
+
+    # Relationships
+    assets = relationship('Asset')
