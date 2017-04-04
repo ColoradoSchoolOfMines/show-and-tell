@@ -1,15 +1,14 @@
-<!--<html py:extends="master.xhmtl" py:strip="True">-->
-<html py:strip="True">
+<html py:extends="master.xhtml" py:strip="True">
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">Show and Tell - Home</title>
+        <title py:block="master_title">${h.app_name()} - Home</title>
     </head>
 
     <body py:block="body" py:strip="True">
         <div class="row">
             <div class="jumbotron">
-                <h1>Welcome to Show and Tell</h1>
+                <h1>Welcome to ${h.app_name()}</h1>
                 <p>
-                Show and Tell is a platform for Mines students to show off
+                ${h.app_name()} is a platform for Mines students to show off
                 their cool projects on the ACM TV in Brown Building West.
                 </p>
             </div>
@@ -26,7 +25,8 @@
                 Building West.
                 </p>
                 <p class="coming-soon">
-                We also have an online showcase.
+                We also have a web interface for seeing students' projects
+                online.
                 </p>
             </div>
 
@@ -42,8 +42,8 @@
                 </ul>
                 </p>
                 <p>
-                <a class="btn btn-primary" href="submit">
-                    Submit Project
+                <a class="btn btn-primary" href="${tg.url('submit')}">
+                    ${h.icon('circle-arrow-up')} Submit Project
                 </a>
                 </p>
             </div>
@@ -55,7 +55,7 @@
                 for everyone to see your awesome work.
                 </p>
                 <p class="coming-soon">
-                People can also view your project in the web showcase interface.
+                People can also view your poject in the web interface.
                 </p>
             </div>
         </div>

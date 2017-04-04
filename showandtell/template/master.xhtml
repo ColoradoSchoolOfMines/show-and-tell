@@ -3,35 +3,42 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta charset="utf-8" />
+  <meta charset="${response.charset}" />
 
-  <title py:block="master_title">Show and Tell</title>
-  <link rel="stylesheet" type="text/css" media="screen" href="resources/css/ie.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="resources/css/print.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="resources/css/screen.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="resources/css/styles.css" />
-
-  <script src="http://code.jquery.com/jquery.js"></script>
-  <script src="resources/js/bootstrap.min.js></script>
-  <script src="resources/js/script.js></script>
+  <title py:block="master_title">${h.app_name()}</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/bootstrap.min.css')}" />
+  <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/style.css')}" />
 
   <py:block name="head"></py:block>
 </head>
 
 <body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="${tg.url('/')}">
+        <img src="${tg.url('/img/turbogears_logo.png')}" height="20" alt="TurboGears 2"/>
+        ${h.app_name()}
+      </a>
+    </div>
+
     <div class="collapse navbar-collapse" id="navbar-content">
       <ul class="nav navbar-nav">
-        <li class=""><a href="/">Home</a></li>
-        <li class=""><a href="/about">About</a></li>
-        <li class=""><a href="/environ">WSGI Environment</a></li>
+        <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="${tg.url('/')}">Home</a></li>
+        <li class="${('', 'active')[self.defined('page') and page=='about']}"><a href="${tg.url('/about')}">About</a></li>
+        <li class="${('', 'active')[self.defined('page') and page=='environ']}"><a href="${tg.url('/environ')}">WSGI Environment</a></li>
       </ul>
-      <!--
       <ul py:if="tg.auth_stack_enabled" class="nav navbar-nav navbar-right">
         <li py:if="not request.identity"><a href="${tg.url('/login')}">Login</a></li>
         <li py:if="request.identity"><a href="${tg.url('/logout_handler')}">Logout</a></li>
         <li py:if="request.identity"><a href="${tg.url('/admin')}">Admin</a></li>
       </ul>
-      -->
     </div>
   </nav>
 
@@ -54,5 +61,8 @@
   <footer class="footer hidden-xs hidden-sm">
       <p>Copyright &copy; ${h.copyright_holder()} ${h.current_year()}</p>
   </footer>
+
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="${tg.url('/javascript/bootstrap.min.js')}"></script>
 </body>
 </html>

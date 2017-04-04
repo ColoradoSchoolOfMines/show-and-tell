@@ -2,7 +2,9 @@
 """ The Show and Tell Application """
 
 # Import your model modules here.
-import showandtell.controller
+from showandtell.kajiki_view import kajiki_view
 import showandtell.model
 import showandtell.helpers
 import showandtell.db
+import showandtell.template
+import showandtell.controller

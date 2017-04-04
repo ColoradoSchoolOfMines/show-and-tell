@@ -16,12 +16,6 @@ def get_copyright_string(start_year):
     else:
         return '&copy; %d Mines ACM. All Rights Reserved.' % start_year
 
-
-def get_template_text(template_name):
-    template = open('showandtell/template/%s.xhtml' % template_name)
-    return str(template.read())
-
-
 def from_config_yaml(key, force_reload=False):
     if helpers.config_yaml is None or force_reload:
         with open('config.yaml') as config:
