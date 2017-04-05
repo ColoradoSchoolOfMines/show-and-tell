@@ -5,15 +5,30 @@ Defines the Kajiki View Decorator
 """
 
 import functools
-from kajiki import PackageLoader
 
-loader = PackageLoader()
+from showandtell.helpers import util
+from kajiki import FileLoader, XMLTemplate
 
-# Used code example from here:
-# https://buxty.com/b/2013/12/jinja2-templates-and-bottle/
-# but customized for kajiki instead
+loader = FileLoader('showandtell/template')
+loader.extension_map['xhtml'] = XMLTemplate
+
+
+def extra_template_context():
+    context = {
+        'util': util,
+        'identity': None
+    }
+    return context
+
+
 def kajiki_view(template_name):
-    """ Defines the kajiki_view decorator """
+    """
+    Defines the kajiki_view decorator
+
+    Used code example from here:
+    https://buxty.com/b/2013/12/jinja2-templates-and-bottle/ but customized for
+    kajiki instead
+    """
     def decorator(view_func):
         @functools.wraps(view_func)
         def wrapper(*args, **kwargs):
@@ -22,8 +37,8 @@ def kajiki_view(template_name):
             if isinstance(response, dict):
                 # If the decorated function returns a dictionary, throw that to
                 # the template
-                Template = loader.load('showandtell.template.%s' % template_name)
-                t = Template(**response)
+                Template = loader.load('%s.xhtml' % template_name)
+                t = Template({**response, **extra_template_context()})
                 return t.render()
             else:
                 return response

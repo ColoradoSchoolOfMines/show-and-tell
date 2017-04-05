@@ -5,6 +5,6 @@
 from showandtell.kajiki_view import kajiki_view
 import showandtell.model
 import showandtell.helpers
-import showandtell.db
 import showandtell.template
 import showandtell.controller
+import showandtell.db

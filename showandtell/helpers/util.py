@@ -5,16 +5,23 @@ Utility Functions
 """
 
 from datetime import date
+from markupsafe import Markup
 import yaml
 
 from showandtell import helpers
 
-def get_copyright_string(start_year):
+
+def copyright_holder():
+    return 'Mines ACM Chapter'
+
+
+def copyright_year(start_year):
     end_year = date.today().year
     if end_year > start_year:
-        return '&copy; %d-%d Mines ACM. All Rights Reserved.' % (start_year, end_year)
+        return '%d-%d' % (start_year, end_year)
     else:
-        return '&copy; %d Mines ACM. All Rights Reserved.' % start_year
+        str(start_year)
+
 
 def from_config_yaml(key, force_reload=False):
     if helpers.config_yaml is None or force_reload:
@@ -22,3 +29,11 @@ def from_config_yaml(key, force_reload=False):
             helpers.config_yaml = yaml.load(config)
 
     return helpers.config_yaml[key]
+
+
+def app_name():
+    return from_config_yaml('app_name')
+
+
+def icon(icon_name):
+    return Markup('<i class="glyphicon glypicon-%s"></i>' % icon_name)

@@ -12,7 +12,7 @@ from showandtell import helpers, kajiki_view
 @get('/login')
 @kajiki_view('login')
 def login():
-    return {'page': 'login'}
+    return {'page': 'login', 'login': None}
 
 
 @post('/login')
@@ -30,7 +30,7 @@ def do_login():
 
 @route('/logout')
 def logout():
-    # TODO: Redirect
+    # TODO: Acutally log out
     redirect('/')
 
 
