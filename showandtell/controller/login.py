@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 
-""" Login Controller """
+"""
+Login Controller
+"""
 
 from bottle import route, get, post, request, redirect
 import requests

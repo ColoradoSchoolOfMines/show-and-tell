@@ -16,7 +16,7 @@ loader.extension_map['xhtml'] = XMLTemplate
 def extra_template_context():
     context = {
         'util': util,
-        'identity': None
+        'identity': None,
     }
     return context
 
