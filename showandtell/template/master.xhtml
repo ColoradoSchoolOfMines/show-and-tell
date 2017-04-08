@@ -7,62 +7,65 @@
 
         <title py:block="master_title">${util.app_name()}</title>
         <!--[if IE]>
-            <link href="resources/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+            <link href="/resources/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <![endif]-->
-        <link rel="stylesheet" type="text/css" media="screen" href="resources/css/print.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="resources/css/screen.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="resources/css/styles.css" />
+        <link rel="stylesheet" type="text/css" media="print" href="/resources/css/print.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/resources/css/screen.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/resources/css/styles.css" />
+
+        <script src="/resources/js/jquery-3.2.0.min.js"></script>
+        <script src="/resources/js/bootstrap.min.js"></script>
 
         <py:block name="head"></py:block>
     </head>
 
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-default">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">
-                    <img src="/resources/img/logo.png'" height="20" alt="Show and Tell"/>
-                    ${util.app_name()}
-                </a>
-            </div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fixed">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <!--<img src="/resources/img/logo.png'" height="20" alt="${util.app_name()}"/>-->
+                        ${util.app_name()}
+                    </a>
+                </div>
 
-            <div class="collapse navbar-collapse" id="navbar-content">
-                <ul class="nav navbar-nav">
-                    <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li py:if="not identity"><a href="/login">Login</a></li>
-                    <li py:if="identity"><a href="/logout_handler">Logout</a></li>
-                    <li py:if="identity"><a href="/admin">Admin</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="navbar-content">
+                    <ul class="nav navbar-nav">
+                        <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li py:if="not identity"><a href="/login">Login</a></li>
+                        <li py:if="identity"><a href="/logout_handler">Logout</a></li>
+                        <li py:if="identity"><a href="/admin">Admin</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
 
-
         <div class="container">
-            <!-- Flash messages 
-            <py:with vars="flash=tg.flash_obj.render('flash', use_js=False)">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div py:if="flash" py:replace="Markup(flash)" />
+            <!-- Flash messages -->
+            <div py:if="self.defined('flash') and len(flash) &gt; 0">
+                <div class="row" id="flash">
+                    <div class="col-md-8 col-md-offset-2 ${flash['cls']}">
+                        ${flash['content']}
                     </div>
                 </div>
-            </py:with>
-            -->
+            </div>
 
             <!-- Main included content -->
             <py:block name="body"></py:block>
-            </div>
+        </div>
 
-            <!-- Footer -->
-            <footer class="footer hidden-xs hidden-sm">
-                <p>Copyright &copy; ${util.copyright_year(2017)} ${util.copyright_holder()}. All Rights Reserved</p>
-            </footer>
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Copyright &copy; ${util.copyright_year(2017)} ${util.copyright_holder()}. All Rights Reserved</p>
+        </footer>
     </body>
 </html>

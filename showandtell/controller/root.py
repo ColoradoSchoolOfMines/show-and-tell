@@ -15,6 +15,8 @@ def index():
 
 # Route all of the resources
 # http://stackoverflow.com/a/13258941/2319844
+
+
 @route('/resources/<filepath:path>')
 def static(filepath):
     return static_file(filepath, root='resources')

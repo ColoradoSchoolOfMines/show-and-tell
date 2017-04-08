@@ -1,0 +1,22 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">${util.app_name()} - ${username}</title>
+    </head>
+
+    <body py:block="body" py:strip="True">
+        <h1>${username}</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">Teams</div>
+            <div class="panel-body">
+                TODO: PUT THE TEAMS HERE
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Projects</div>
+            <div class="panel-body">
+                TODO: PUT THE PROJECTS HERE
+            </div>
+        </div>
+    </body>
+</html>

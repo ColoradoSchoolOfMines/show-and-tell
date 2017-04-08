@@ -36,4 +36,4 @@ def app_name():
 
 
 def icon(icon_name):
-    return Markup('<i class="glyphicon glypicon-%s"></i>' % icon_name)
+    return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
