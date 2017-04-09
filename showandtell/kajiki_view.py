@@ -6,19 +6,13 @@ Defines the Kajiki View Decorator
 
 import functools
 
+from bottle import request
+from showandtell import db, model
 from showandtell.helpers import util
 from kajiki import FileLoader, XMLTemplate
 
 loader = FileLoader('showandtell/template')
 loader.extension_map['xhtml'] = XMLTemplate
-
-
-def extra_template_context():
-    context = {
-        'util': util,
-        'identity': None,
-    }
-    return context
 
 
 def kajiki_view(template_name):
@@ -38,7 +32,16 @@ def kajiki_view(template_name):
                 # If the decorated function returns a dictionary, throw that to
                 # the template
                 Template = loader.load('%s.xhtml' % template_name)
-                t = Template({**response, **extra_template_context()})
+                session_token = request.get_cookie('session_token')
+                user_session = db.session.query(model.Session)\
+                    .filter_by(session_cookie=session_token).first()
+
+                identity = None if user_session is None else user_session.user
+
+                t = Template({
+                    **response,
+                    **util.extra_template_context(identity)
+                })
                 return t.render()
             else:
                 return response

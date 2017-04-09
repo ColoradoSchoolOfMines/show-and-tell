@@ -4,7 +4,7 @@
 Session Model
 """
 
-import showandtell.model
+from showandtell import model
 from showandtell.db import Base, session
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
@@ -15,7 +15,7 @@ import datetime
 class Session(Base):
 
     def __init__(self, username, session_token):
-        self.user_id = session.query(showandtell.model.Person)\
+        self.user_id = session.query(model.Person)\
             .filter_by(multipass_username=username)\
             .first()\
             .user_id
@@ -32,4 +32,4 @@ class Session(Base):
     user_id = Column(Integer, ForeignKey('people.user_id'), nullable=False)
 
     # Relationships
-    user = relationship('Person')
+    user = relationship('Person', back_populates='sessions')

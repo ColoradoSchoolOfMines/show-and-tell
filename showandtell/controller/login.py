@@ -9,8 +9,7 @@ import requests
 import urllib.parse
 import uuid
 
-from showandtell import helpers, kajiki_view, db
-from showandtell.model import Session
+from showandtell import helpers, kajiki_view, db, model
 
 
 @get('/login')
@@ -40,10 +39,11 @@ def do_login():
         session_token = uuid.uuid4()
 
         # Create the actual session
-        user_session = Session(username, session_token)
+        user_session = model.Session(username, session_token)
         db.session.add(user_session)
         db.session.commit()
 
+        # Send the cookie back
         response.set_cookie('session_token', str(session_token))
 
         redirect('/user/%s' % username)
@@ -53,8 +53,11 @@ def do_login():
 
 @route('/logout')
 def logout():
-    session = db.session.query(showandtell.model.Session)\
-        .filter_by(session_cookie=request.get_cookie('session_token')).delete()
+    user_session = db.session.query(model.Session)\
+        .filter_by(session_cookie=request.get_cookie('session_token')).one()
+    db.session.delete(user_session)
+    db.session.commit()
+    response.delete_cookie('session_token')
     redirect('/')
 
 

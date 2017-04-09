@@ -22,4 +22,4 @@ class Project(Base):
 
     # Relationships
     assets = relationship('ProjectAsset')
-    team = relationship('Team')
+    team = relationship('Team', back_populates='projects')

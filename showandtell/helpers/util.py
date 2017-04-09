@@ -12,7 +12,7 @@ from showandtell import helpers
 
 
 def copyright_holder():
-    return 'Mines ACM Chapter'
+    return 'Jonathan Sumner Evans, Daichi Jameson, and Sam Sartor'
 
 
 def copyright_year(start_year):
@@ -20,7 +20,7 @@ def copyright_year(start_year):
     if end_year > start_year:
         return '%d-%d' % (start_year, end_year)
     else:
-        str(start_year)
+        return str(start_year)
 
 
 def from_config_yaml(key, force_reload=False):
@@ -35,5 +35,17 @@ def app_name():
     return from_config_yaml('app_name')
 
 
-def icon(icon_name):
+def extra_template_context(identity):
+    context = {
+        'util': helpers.util,
+        'identity': identity,
+    }
+    return context
+
+
+def glyphicon(icon_name):
     return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
+
+
+def faicon(icon_name):
+    return Markup('<span class="fa fa-%s"></span>' % icon_name)

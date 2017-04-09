@@ -8,6 +8,15 @@
             <img class="profile_pic" src="/user/${profile.multipass_username}/profile_pic.jpg"/>
             <h1>${profile.name}</h1>
             <p>${profile.bio}</p>
+            <p>
+            <a py:if="profile.github_username is not None" href="https://github.com/${profile.github_username}" target="_blank">
+                ${util.faicon('github')} ${profile.github_username}
+            </a>
+            <span class="dot-sep" py:if="profile.github_username is not None and profile.website is not None">&#8226;</span>
+            <a py:if="profile.website is not None" href="${profile.website}" target="_blank">
+                ${util.glyphicon('globe')} ${profile.website}
+            </a>
+            </p>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">Teams</div>

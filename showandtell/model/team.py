@@ -21,6 +21,6 @@ class Team(Base):
     website = Column(String)
 
     # Relationships
-    profile_pic = relationship('Asset')
-    members = relationship('Person', secondary=person_team_xref)
-    projects = relationship('Project')
+    profile_pic = relationship('Asset', back_populates='team')
+    members = relationship('Person', secondary=person_team_xref, back_populates='teams')
+    projects = relationship('Project', back_populates='team')

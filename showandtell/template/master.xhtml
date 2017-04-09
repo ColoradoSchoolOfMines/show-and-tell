@@ -9,7 +9,7 @@
         <!--[if IE]>
             <link href="/resources/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <![endif]-->
-        <link rel="stylesheet" type="text/css" media="print" href="/resources/css/print.css" />
+        <!--<link rel="stylesheet" type="text/css" media="print" href="/resources/css/print.css" />-->
         <link rel="stylesheet" type="text/css" media="screen" href="/resources/css/screen.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="/resources/css/styles.css" />
 
@@ -41,9 +41,16 @@
                         <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li py:if="not identity"><a href="/login">Login</a></li>
-                        <li py:if="identity"><a href="/logout_handler">Logout</a></li>
-                        <li py:if="identity"><a href="/admin">Admin</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='login']}" py:if="not identity"><a href="/login">Login</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='new_team']}" py:if="identity"><a href="/new_team">New Team</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='submit_project']}" py:if="identity"><a href="/submit">Submit Project</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='user_profile']} dropdown" py:if="identity">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button">${identity.name} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/user/${identity.multipass_username}">Profile</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

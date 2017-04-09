@@ -26,11 +26,10 @@ class ProjectAsset(Base):
     __tablename__ = 'project_asset_xref'
 
     # Fields
-    project_asset_id = Column(Integer, autoincrement=True, primary_key=True)
     project_id = Column(Integer, ForeignKey('projects.project_id'),
-                        nullable=False)
-    asset_id = Column(Integer, ForeignKey('assets.asset_id'), nullable=False)
+                        primary_key=True)
+    asset_id = Column(Integer, ForeignKey('assets.asset_id'), primary_key=False)
     role = Column(String, nullable=False)
 
     # Relationships
-    assets = relationship('Asset')
+    child = relationship('Asset')
