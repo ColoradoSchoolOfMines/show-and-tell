@@ -4,13 +4,14 @@
 Person Model
 """
 
-from showandtell.db import DeclarativeBase
+from showandtell.db import Base
 from showandtell.model.association_tables import person_team_xref
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-class Person(DeclarativeBase):
+
+class Person(Base):
     __tablename__ = 'people'
 
     # Fields
@@ -23,7 +24,5 @@ class Person(DeclarativeBase):
     website = Column(String)
 
     # Relationships
-    profile_pic = relationship('Assset',
-                               backref=backref('people', use_list=False))
-    teams = relationship('Team', secondary=person_team_xref,
-                         back_populates='people')
+    profile_pic = relationship('Asset')
+    teams = relationship('Team', secondary=person_team_xref)

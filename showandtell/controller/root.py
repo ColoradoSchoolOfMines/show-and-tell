@@ -5,7 +5,8 @@ Root Controller
 """
 
 from bottle import route, static_file
-from showandtell import helpers, kajiki_view
+from showandtell import helpers, kajiki_view, db
+import showandtell.model
 
 
 @route('/')

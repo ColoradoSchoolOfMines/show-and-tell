@@ -1,10 +1,14 @@
 <html py:extends="master.xhtml" py:strip="True">
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${util.app_name()} - ${username}</title>
+        <title py:block="master_title">${util.app_name()} - ${profile.name}</title>
     </head>
 
     <body py:block="body" py:strip="True">
-        <h1>${username}</h1>
+        <div class="container">
+            <img class="profile_pic" src="/user/${profile.multipass_username}/profile_pic.jpg"/>
+            <h1>${profile.name}</h1>
+            <p>${profile.bio}</p>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">Teams</div>
             <div class="panel-body">

@@ -4,18 +4,18 @@
 Cross Reference Tables
 """
 
-from showandtell.db import DeclarativeBase
+from showandtell.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
-person_team_xref = Table('person_team_xref', DeclarativeBase.metadata,
+person_team_xref = Table('person_team_xref', Base.metadata,
                          Column('person_id', Integer,
                                 ForeignKey('people.user_id')),
                          Column('team_id', Integer,
                                 ForeignKey('teams.team_id')))
 
 
-class ProjectAsset(DeclarativeBase):
+class ProjectAsset(Base):
     """
     Project to Asset Cross Reference Table
 

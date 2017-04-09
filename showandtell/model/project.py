@@ -4,12 +4,12 @@
 Project Model
 """
 
-from showandtell.db import DeclarativeBase
+from showandtell.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class Project(DeclarativeBase):
+class Project(Base):
     __tablename__ = 'projects'
 
     # Fields
@@ -22,4 +22,4 @@ class Project(DeclarativeBase):
 
     # Relationships
     assets = relationship('ProjectAsset')
-    team = relationship('Team', back_populates='projects')
+    team = relationship('Team')

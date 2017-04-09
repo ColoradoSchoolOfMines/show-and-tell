@@ -4,11 +4,13 @@
 Login Controller
 """
 
-from bottle import route, get, post, request, redirect
+from bottle import route, get, post, request, redirect, response
 import requests
 import urllib.parse
+import uuid
 
-from showandtell import helpers, kajiki_view
+from showandtell import helpers, kajiki_view, db
+from showandtell.model import Session
 
 
 @get('/login')
@@ -31,14 +33,19 @@ def do_login():
     username = request.forms.get('username')
     password = request.forms.get('password')
 
-    print(username, password)
-
     if username is None or password is None:
         redirect('/login?enter_credentials=true')
 
-    # TODO: Exception handling
     if multipass_auth(username, password):
-        # TODO: Create session
+        session_token = uuid.uuid4()
+
+        # Create the actual session
+        user_session = Session(username, session_token)
+        db.session.add(user_session)
+        db.session.commit()
+
+        response.set_cookie('session_token', str(session_token))
+
         redirect('/user/%s' % username)
     else:
         redirect('/login?bad_login=true')
@@ -46,7 +53,8 @@ def do_login():
 
 @route('/logout')
 def logout():
-    # TODO: Acutally log out
+    session = db.session.query(showandtell.model.Session)\
+        .filter_by(session_cookie=request.get_cookie('session_token')).delete()
     redirect('/')
 
 

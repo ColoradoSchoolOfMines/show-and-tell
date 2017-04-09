@@ -4,11 +4,11 @@
 Asset Model
 """
 
-from showandtell.db import DeclarativeBase
+from showandtell.db import Base
 from sqlalchemy import Column, Integer, String, Binary
 
 
-class Asset(DeclarativeBase):
+class Asset(Base):
     __tablename__ = 'assets'
 
     # Fields
