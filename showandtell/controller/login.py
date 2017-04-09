@@ -15,6 +15,7 @@ from showandtell import helpers, kajiki_view, db, model
 @get('/login')
 @kajiki_view('login')
 def login():
+    # Set up the flash banner if necessary
     flash = {}
     if bool(request.GET.get('bad_login')):
         flash['content'] = 'Invalid MultiPass Credentials'
@@ -29,9 +30,11 @@ def login():
 
 @post('/login')
 def do_login():
+    # Get the username and password from the form data
     username = request.forms.get('username')
     password = request.forms.get('password')
 
+    # If they didn't enter both username and password, redirect and complain
     if username is None or password is None:
         redirect('/login?enter_credentials=true')
 

@@ -24,6 +24,7 @@ An application to allow CS majors to show off their CS projects on the ACM TV in
         sqlalchemy
         kajiki
         bottle
+        PyYaml
 
-Run the app by running `app.py` and navigating in your browser to
-`localhost:8080`
+5. Run the app by running `app.py` and navigating in your browser to
+   `localhost:8080`

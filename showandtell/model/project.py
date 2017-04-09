@@ -5,7 +5,7 @@ Project Model
 """
 
 from showandtell.db import Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
 
@@ -19,6 +19,7 @@ class Project(Base):
     description = Column(String, nullable=False)
     name = Column(String, unique=True, nullable=False)
     website = Column(String)
+    verified = Column(Boolean)
 
     # Relationships
     assets = relationship('ProjectAsset')
