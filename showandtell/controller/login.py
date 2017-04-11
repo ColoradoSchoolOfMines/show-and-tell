@@ -5,8 +5,6 @@ Login Controller
 """
 
 from bottle import route, get, post, request, redirect, response
-import requests
-import urllib.parse
 import uuid
 
 from showandtell import helpers, kajiki_view, db, model
@@ -38,7 +36,7 @@ def do_login():
     if username is None or password is None:
         redirect('/login?enter_credentials=true')
 
-    if multipass_auth(username, password):
+    if helpers.mpapi.auth(username, password):
         session_token = uuid.uuid4()
 
         # Create the actual session
@@ -62,20 +60,3 @@ def logout():
     db.session.commit()
     response.delete_cookie('session_token')
     redirect('/')
-
-
-def multipass_auth(username, password):
-    """ Authenticate using MultiPass via Jack Rosenthal's Unofficial API """
-
-    api_base = helpers.util.from_config_yaml('mpapi_base')
-    auth_request = requests.post(urllib.parse.urljoin(api_base, 'auth'), data={
-        'username': username,
-        'password': password,
-    })
-
-    # TODO: Logging
-
-    if not auth_request.ok:
-        return False
-
-    return auth_request.json()['result'] == 'success'

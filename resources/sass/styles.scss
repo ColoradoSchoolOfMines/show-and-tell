@@ -7,8 +7,12 @@
 // Import Bootstrap for Sass
 @import "bootstrap";
 
+@import "compass/css3";
+
 /* Because of the floating nav bar */
-body { padding-top: 70px; }
+body {
+    padding-top: 70px;
+}
 
 /* TurboGears flash bootstrap look */
 
@@ -50,11 +54,33 @@ body { padding-top: 70px; }
 
     p {
         margin-bottom: 0;
-        color:$gray;
+        color: $gray;
     }
 }
 
 /* Dot separator */
 span.dot-sep {
     padding: 0 5px;
+}
+
+.row {
+    &.profile {
+        margin-bottom: 30px;
+
+        .profile-pic {
+            @include box-shadow(0 0 6px rgba(0, 0, 0, 0.8));
+            @include border-radius(75px);
+
+            width: 150px;
+            height: 150px;
+            background-size: 150px 150px;
+            background-repeat: no-repeat;
+            margin: 0 auto;
+
+            img {
+                opacity: 0;
+                filter: alpha(opacity = 0);
+            }
+        }
+    }
 }

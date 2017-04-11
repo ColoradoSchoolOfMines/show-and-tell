@@ -4,24 +4,38 @@
 Session Model
 """
 
+import datetime
+
 from showandtell import model
 from showandtell.db import Base, session
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-import datetime
-
 
 class Session(Base):
 
     def __init__(self, username, session_token):
-        self.user_id = session.query(model.Person)\
+        person = session.query(model.Person)\
             .filter_by(multipass_username=username)\
-            .first()\
-            .user_id
+            .first()
 
+        # TODO: should we be automatically creating user accounts?
+        if not person:
+            person = model.Person(username)
+            session.add(person)
+            session.commit()
+
+        self.user_id = person.user_id
         self.expires_on = datetime.datetime.now()
         self.session_cookie = session_token
+
+    @staticmethod
+    def get_identity(request):
+        user_session = session.query(Session)\
+            .filter_by(session_cookie=request.get_cookie('session_token'))\
+            .first()
+
+        return None if user_session is None else user_session.user
 
     __tablename__ = 'sessions'
 

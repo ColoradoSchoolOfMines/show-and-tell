@@ -4,6 +4,7 @@
 Person Model
 """
 
+from showandtell import helpers
 from showandtell.db import Base
 from showandtell.model.association_tables import person_team_xref
 
@@ -12,6 +13,10 @@ from sqlalchemy.orm import relationship, backref
 
 
 class Person(Base):
+    def __init__(self, username):
+        self.multipass_username = username
+        self.name = helpers.mpapi.user_info(username)['gecos']
+
     __tablename__ = 'people'
 
     # Fields

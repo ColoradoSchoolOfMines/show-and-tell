@@ -4,9 +4,13 @@
 Utility Functions
 """
 
+import os
 from datetime import date
-from markupsafe import Markup
+
+import uuid
+
 import yaml
+from markupsafe import Markup
 
 from showandtell import helpers
 
@@ -49,3 +53,10 @@ def glyphicon(icon_name):
 
 def faicon(icon_name):
     return Markup('<span class="fa fa-%s"></span>' % icon_name)
+
+
+def save_asset(uploaded_file):
+    base_path = from_config_yaml('asset_save_location')
+    real_filename = str(uuid.uuid4())
+    uploaded_file.save(os.path.join(base_path, real_filename))
+    return real_filename

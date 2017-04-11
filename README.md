@@ -19,12 +19,14 @@ An application to allow CS majors to show off their CS projects on the ACM TV in
         gem install font-awesome-sass
         gem install bootstrap-sass
 
-4. Install the following Python libraries:
+4. Install the following Python libraries. (Pip is probably the easiest way to
+   do this.)
 
         sqlalchemy
         kajiki
         bottle
         PyYaml
+        validators
 
 5. Run the app by running `app.py` and navigating in your browser to
    `localhost:8080`

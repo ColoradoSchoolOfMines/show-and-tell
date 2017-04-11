@@ -32,4 +32,5 @@ class ProjectAsset(Base):
     role = Column(String, nullable=False)
 
     # Relationships
-    child = relationship('Asset')
+    project = relationship('Project', back_populates='assets')
+    assets = relationship('Asset', back_populates='project')

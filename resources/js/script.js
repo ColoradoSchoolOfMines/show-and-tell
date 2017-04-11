@@ -17,7 +17,7 @@ var form_validator = function(form_cls) {
                     console.log(field);
 
                     if (field.validity.valid) {
-                        console.log('got here')
+                        console.log('got here');
                     }
                 }
             }
@@ -28,4 +28,16 @@ var form_validator = function(form_cls) {
 $(document).ready(function() {
     var fv = new form_validator('form');
     fv.validate();
+
+    // Go through all of the elements checking for data-collapse attributes
+    $('*').each(function() {
+        var button = $(this),
+            collapse_el = button.data('collapse');
+
+        if (collapse_el) {
+            button.on('click', function() {
+                $(collapse_el).collapse('hide');
+            });
+        }
+    });
 });

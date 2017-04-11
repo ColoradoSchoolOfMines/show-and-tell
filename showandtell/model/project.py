@@ -22,5 +22,5 @@ class Project(Base):
     verified = Column(Boolean)
 
     # Relationships
-    assets = relationship('ProjectAsset')
+    assets = relationship('ProjectAsset', back_populates='project')
     team = relationship('Team', back_populates='projects')

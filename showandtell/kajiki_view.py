@@ -32,15 +32,10 @@ def kajiki_view(template_name):
                 # If the decorated function returns a dictionary, throw that to
                 # the template
                 Template = loader.load('%s.xhtml' % template_name)
-                session_token = request.get_cookie('session_token')
-                user_session = db.session.query(model.Session)\
-                    .filter_by(session_cookie=session_token).first()
-
-                identity = None if user_session is None else user_session.user
 
                 t = Template({
                     **response,
-                    **util.extra_template_context(identity)
+                    **util.extra_template_context(model.Session.get_identity(request))
                 })
                 return t.render()
             else:
