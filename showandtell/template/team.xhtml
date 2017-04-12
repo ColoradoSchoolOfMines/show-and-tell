@@ -1,37 +1,33 @@
 <html py:extends="master.xhtml" py:strip="True">
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${util.app_name()} - ${profile.name}</title>
+        <title py:block="master_title">${util.app_name()} - ${'New Team' if is_new else team.name}</title>
     </head>
 
     <body py:block="body" py:strip="True">
         <div class="row profile">
             <div class="col-md-3" >
-                <div class="profile-pic" style="background-image: url('/user/${profile.multipass_username}/profile_pic.jpg');">
-                    <img src="/user/${profile.multipass_username}/profile_pic.jpg" alt="profile picture" width="150" height="150" />
+                <div class="profile-pic" style="background-image: url('/team/${team.team_id}/team_pic');"
+                     py:if="not is_new">
+                    <img src="/team/${team.team_id}/team_pic" alt="profile picture" width="150" height="150" />
+                </div>
+                <div class="profile-pic" style="background-image: url('/resources/images/default-team-pic.png');"
+                     py:if="is_new">
+                    <img src="/resources/images/default-team-pic.png" alt="profile picture" width="150" height="150" />
                 </div>
             </div>
 
             <div id="profile-display-edit" class="col-md-9">
-                <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
-                    <h1>${profile.name}</h1>
-                    <p>${profile.bio}</p>
-                    <p py:if="profile.github_username or profile.website">
-                    <a href="https://github.com/${profile.github_username}"
-                       py:if="profile.github_username"
-                       target="_blank">
-                        ${util.faicon('github')} ${profile.github_username}
-                    </a>
+                <div id="profile-display" aria-expanded="true" class="collapse ${'in' if not is_new else ''} profile-display">
+                    <h1>${'New Team' if is_new else team.name}</h1>
 
-                    <span class="dot-sep"
-                          py:if="profile.github_username and profile.website">&#8226;</span>
-
-                    <a href="${profile.website}"
-                       py:if="profile.website"
+                    <p>
+                    <a href="${team.website}"
+                       py:if="not is_new and team.website"
                        target="_blank">
-                        ${util.glyphicon('globe')} ${profile.website}
+                        ${util.glyphicon('globe')} ${team.website}
                     </a>
                     </p>
-                    <p py:if="identity.multipass_username == profile.multipass_username">
+                    <p py:if="can_edit">
                     <button type="button"
                             class="btn btn-default"
                             aria-expabnded="true"
@@ -41,40 +37,28 @@
                     </p>
                 </div>
                 <form id="profile-edit"
-                      class="collapse profile-edit form-horizontal"
+                      class="collapse ${'in' if is_new else ''} profile-edit form-horizontal"
                       method="post"
                       aria-expanded="false"
                       enctype="multipart/form-data"
-                      action="/user/${profile.multipass_username}/edit"
-                      py:if="identity.multipass_username == profile.multipass_username">
+                      action="${post_to}"
+                      py:if="can_edit">
                     <div class="form-group">
                         <label class="col-md-3 control-label">Name:</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" name="name" value="${profile.name}"/>
+                            <input class="form-control" type="text" name="name" value="${'' if is_new else team.name}" required="required"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Profile Picture:</label>
                         <div class="col-md-8">
-                            <input type="file" name="profile_pic" value="${profile.profile_pic and profile.profile_pic.name}" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">GitHub Username:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="github_username" value="${profile.github_username}"/>
+                            <input type="file" name="profile_pic"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Website:</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" name="website" value="${profile.website}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Bio:</label>
-                        <div class="col-md-8">
-                            <textarea class="form-control" rows="3" name="bio">${profile.bio}</textarea>
+                            <input class="form-control" type="text" name="website" value="${'' if is_new else team.website}"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -92,18 +76,22 @@
                 </form>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Teams</div>
-            <div class="panel-body">
-                TODO: PUT THE TEAMS HERE
+
+        <div class="row" py:if="not is_new and len(team.members) &gt; 0">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Members</div>
+                    <table class="table table-hover">
+                        <tr py:for="m in team.members">
+                            <td><a href="/user/${m.multipass_username}">${m.name}</a></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger">Remove</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Projects</div>
-            <div class="panel-body">
-                TODO: PUT THE PROJECTS HERE
-            </div>
-        </div>
     </body>
 </html>

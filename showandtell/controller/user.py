@@ -57,7 +57,7 @@ def do_user_edit(username):
         # TODO: Blow up
         pass
 
-    if not website.startswith('http://') and not website.startswith('https://'):
+    if website and not website.startswith('http://') and not website.startswith('https://'):
         website = 'http://' + website
 
     if website and not validators.url(website):
