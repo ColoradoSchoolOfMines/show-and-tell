@@ -5,7 +5,7 @@ Project Model
 """
 
 from showandtell.db import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
 
 
@@ -27,7 +27,12 @@ class Project(Base):
     description = Column(String, nullable=False)
     name = Column(String, unique=True, nullable=False)
     website = Column(String)
-    verified = Column(Boolean)
+    status = Column(String, nullable=False, default="unverified")
+
+    # Constraints
+    __table_args__ = (
+        CheckConstraint("status in ('unverified', 'rejected', 'accepted')"),
+    )
 
     # Relationships
     assets = relationship('ProjectAsset', back_populates='project')

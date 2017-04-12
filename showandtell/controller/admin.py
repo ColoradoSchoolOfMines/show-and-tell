@@ -21,9 +21,7 @@ def admin_panel():
     dp = Project(t, 'Dynamic Programming', 'Cool project', 'shell_script')
 
     return {
-        'unverified_projects': [algobowl, dp],
-        'verified_projects': [],
-        'rejected_projects': [],
+        'projects': [algobowl, dp],
         'page': 'admin',
     }
 

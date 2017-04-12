@@ -37,7 +37,7 @@
                         <li class="${('', 'active')[self.defined('page') and page=='login']}" py:if="not identity"><a href="/login">Login</a></li>
                         <li class="${('', 'active')[self.defined('page') and page=='new_team']}" py:if="identity"><a href="/new_team">New Team</a></li>
                         <li class="${('', 'active')[self.defined('page') and page=='submit_project']}" py:if="identity"><a href="/submit">Submit Project</a></li>
-                        <li class="${('', 'active')[self.defined('page') and page=='admin']}" py:if="identity.is_admin"><a href="/admin">Admin</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='admin']}" py:if="identity and identity.is_admin"><a href="/admin">Admin</a></li>
                         <li class="${('', 'active')[self.defined('page') and page=='user_profile']} dropdown" py:if="identity">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button">${identity.name} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
