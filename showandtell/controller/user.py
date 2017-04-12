@@ -28,7 +28,7 @@ def user_profile(username):
 @post('/user/<username>/edit')
 def do_user_edit(username):
     session_identity = model.Session.get_identity(request)
-    if session_identity and session_identity.multipass_username != username:
+    if not session_identity or session_identity.multipass_username != username:
         abort(403, 'You are not allowed to edit users other than yourself')
 
     profile = db.session.query(model.Person)\

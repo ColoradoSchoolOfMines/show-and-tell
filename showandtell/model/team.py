@@ -12,6 +12,11 @@ from sqlalchemy.orm import relationship, backref
 
 
 class Team(Base):
+
+    def __init__(self, name, website=None):
+        self.name = name
+        self.website = website
+
     __tablename__ = 'teams'
 
     # Fields
@@ -22,5 +27,6 @@ class Team(Base):
 
     # Relationships
     profile_pic = relationship('Asset', back_populates='team')
-    members = relationship('Person', secondary=person_team_xref, back_populates='teams')
+    members = relationship(
+        'Person', secondary=person_team_xref, back_populates='teams')
     projects = relationship('Project', back_populates='team')

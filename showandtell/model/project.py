@@ -10,6 +10,14 @@ from sqlalchemy.orm import relationship
 
 
 class Project(Base):
+
+    def __init__(self, team, name, description, type, website=None):
+        self.team = team
+        self.name = name
+        self.description = description
+        self.type = type
+        self.website = website
+
     __tablename__ = 'projects'
 
     # Fields
