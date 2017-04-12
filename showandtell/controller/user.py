@@ -80,8 +80,6 @@ def profile_pic(username):
         .join(model.Person)\
         .filter_by(multipass_username=username).first()
 
-    print(profile_pic)
-
     if profile_pic is None:
         # If they haven't uploaded a profile pic yet, show the default one
         return static_file('default-profile-pic.png', root='resources/images',
