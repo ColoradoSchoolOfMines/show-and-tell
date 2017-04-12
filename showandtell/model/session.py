@@ -5,6 +5,7 @@ Session Model
 """
 
 import datetime
+from datetime import timedelta
 
 from showandtell import model
 from showandtell.db import Base, session
@@ -29,9 +30,7 @@ class Session(Base):
         self.session_cookie = session_token
 
         # Expire Token in a Month
-        expiry_date = datetime.datetime.now()
-        expiry_date.month += 1
-        self.expires_on = expiry_date
+        self.expires_on = datetime.datetime.now() + timedelta(days=30)
 
     @staticmethod
     def get_identity(request):

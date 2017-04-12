@@ -57,6 +57,9 @@ def do_user_edit(username):
         # TODO: Blow up
         pass
 
+    if not website.startswith('http://') and not website.startswith('https://'):
+        website = 'http://' + website
+
     if website and not validators.url(website):
         # TODO: blow up
         pass
@@ -76,6 +79,8 @@ def profile_pic(username):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\
         .filter_by(multipass_username=username).first()
+
+    print(profile_pic)
 
     if profile_pic is None:
         # If they haven't uploaded a profile pic yet, show the default one
