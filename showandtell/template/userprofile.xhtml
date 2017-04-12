@@ -93,10 +93,20 @@
                 </form>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Teams</div>
-            <div class="panel-body">
-                TODO: PUT THE TEAMS HERE
+
+        <div class="row" py:if="len(teams) &gt; 0">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Teams</div>
+                    <table class="table table-hover">
+                        <tr py:for="t in teams">
+                            <td width="35">
+                                <img src="/team/${t.team_id}/team_pic" width="30" height="30" />
+                            </td>
+                            <td><a href="/team/${t.team_id}">${t.name}</a></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
