@@ -1,72 +1,79 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8" />
-
         <title py:block="master_title">${util.app_name()}</title>
         <link rel="stylesheet" type="text/css" media="screen" href="/resources/css/app.css" />
-
         <script src="/resources/js/jquery-3.2.0.min.js"></script>
         <script src="/resources/js/bootstrap.min.js"></script>
         <script src="/resources/js/script.js"></script>
-
-        <py:block name="head"></py:block>
-    </head>
-
-    <body>
-        <!-- Navbar -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fixed">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">${util.app_name()}</a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="navbar-content">
-                    <ul class="nav navbar-nav">
-                        <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="${('', 'active')[self.defined('page') and page=='login']}" py:if="not identity"><a href="/login">Login</a></li>
-                        <li class="${('', 'active')[self.defined('page') and page=='new_team']}" py:if="identity"><a href="/team/new">New Team</a></li>
-                        <li class="${('', 'active')[self.defined('page') and page=='submit_project']}" py:if="identity"><a href="/submit">Submit Project</a></li>
-                        <li class="${('', 'active')[self.defined('page') and page=='admin']}" py:if="identity and identity.is_admin"><a href="/admin">Admin</a></li>
-                        <li class="${('', 'active')[self.defined('page') and page=='user_profile']} dropdown" py:if="identity">
-                            <a class="dropdown-toggle" data-toggle="dropdown" role="button">${identity.name} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/user/${identity.multipass_username}">Profile</a></li>
-                                <li><a href="/logout">Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+    <py:block name="head"></py:block>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fixed">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">${util.app_name()}</a>
             </div>
-        </nav>
-
-        <div class="container">
-            <!-- Flash messages -->
-            <div py:if="self.defined('flash') and len(flash) &gt; 0">
-                <div class="row" id="flash">
-                    <div class="col-md-8 col-md-offset-2 ${flash['cls']}">
-                        ${flash['content']}
-                    </div>
-                </div>
+            <div class="collapse navbar-collapse" id="navbar-content">
+                <ul class="nav navbar-nav">
+                    <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="${('', 'active')[self.defined('page') and page=='login']}" py:if="not identity"><a href="/login">Login</a></li>
+                    <li class="${('', 'active')[self.defined('page') and page=='new_team']} dropdown" py:if="identity">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button">New Team</a>
+                        <div class="dropdown-menu">
+                            <form action="/team/new" method="post" accept-charset="UTF-8" class="form-vertical new-team-dropdown">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input class="form-control" type="text" name="name" placeholder="Name" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="">
+                                        <button type="submit" class="btn btn-default">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <li class="${('', 'active')[self.defined('page') and page=='submit_project']}" py:if="identity"><a href="/submit">Submit Project</a></li>
+                    <li class="${('', 'active')[self.defined('page') and page=='admin']}" py:if="identity and identity.is_admin"><a href="/admin">Admin</a></li>
+                    <li class="${('', 'active')[self.defined('page') and page=='user_profile']} dropdown" py:if="identity">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button">${identity.name} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/${identity.multipass_username}">Profile</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-
-            <!-- Main included content -->
-            <py:block name="body"></py:block>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Copyright &copy; ${util.copyright_year(2017)} ${util.copyright_holder()}. All Rights Reserved</p>
-        </footer>
-    </body>
+    </nav>
+    <div class="container">
+        <!-- Flash messages -->
+        <div py:if="self.defined('flash') and len(flash) &gt; 0">
+            <div class="row" id="flash">
+                <div class="col-md-8 col-md-offset-2 ${flash['cls']}">
+                    ${flash['content']}
+                </div>
+            </div>
+        </div>
+        <!-- Main included content -->
+    <py:block name="body"></py:block>
+</div>
+<!-- Footer -->
+<footer class="footer">
+    <p>Copyright &copy; ${util.copyright_year(2017)} ${util.copyright_holder()}. All Rights Reserved</p>
+</footer>
+</body>
 </html>

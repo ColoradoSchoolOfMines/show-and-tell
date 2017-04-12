@@ -13,14 +13,17 @@ import os
 @route('/user/<username>')
 @kajiki_view('userprofile')
 def user_profile(username):
-    user = db.session.query(model.Person).filter_by(
+    user_query = db.session.query(model.Person).filter_by(
         multipass_username=username)
-
-    if not user.first():
+    
+    if not user_query.first():
         abort(404, 'No profile found for %s' % username)
 
+    user = user_query.one()
+
     return {
-        'profile': user.one(),
+        'teams': user.teams,
+        'profile': user,
         'page': 'user_profile',
     }
 
