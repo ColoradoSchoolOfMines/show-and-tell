@@ -23,7 +23,7 @@
                             <th>Description</th>
                             <th>Type</th>
                             <th>Website</th>
-                            <th>Assets</th>
+                            <th width="110">Assets</th>
                             <th>Reject/Verify</th>
                         </tr>
                         <tr py:for="p in projects">
@@ -34,14 +34,45 @@
                             <td>${p.team.name}</td>
                             <td>${p.description}</td>
                             <td>${p.type}</td>
-                            <td>${p.website}</td>
+                            <td><a href="${p.website}" target="_blank">${p.website}</a></td>
                             <td><a href="">Dowload Assets</a></td>
                             <td class="reject-verify">
-                                <button class="btn btn-sm btn-danger">Reject</button>
-                                <button class="btn btn-sm btn-success">Verify</button>
+                                <button class="${'disabled' if p.status == 'rejected' else ''} btn btn-sm btn-danger project-submit"
+                                        data-toggle="modal"
+                                        data-target="#reject-reason"
+                                        data-project_id="${p.project_id}">
+                                    Reject
+                                </button>
+                                <a href="/admin/${p.project_id}/verify" class="${'disabled' if p.status == 'verified' else ''} btn btn-sm btn-success">
+                                    Verify
+                                </a>
                             </td>
                         </tr>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="reject-reason" class="modal fade" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Reject Reason</h4>
+                    </div>
+                    <form method="post" action="/admin/PROJECT_ID/reject">
+                        <div class="modal-body">
+                            <textarea class="form-control autofocus"
+                                      name="reason"
+                                      rows="5"
+                                      required="required"
+                                      placeholder="Enter a reason for rejection">${None}</textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

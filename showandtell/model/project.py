@@ -4,7 +4,7 @@
 Project Model
 """
 
-from showandtell.db import Base
+from showandtell.db import Base, session
 from sqlalchemy import Column, Integer, String, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
 
@@ -19,6 +19,21 @@ class Project(Base):
         self.website = website
         self.status = status
 
+    def verify(self):
+        self.status = 'verified'
+        session.add(self)
+        session.commit()
+
+    def reject(self, reason):
+        self.status = 'rejected'
+        self.reject_reason = reason
+        session.add(self)
+        session.commit()
+
+    @staticmethod
+    def get_by_id(project_id):
+        return session.query(Project).filter_by(project_id=project_id).one()
+
     __tablename__ = 'projects'
 
     # Fields
@@ -29,10 +44,12 @@ class Project(Base):
     name = Column(String, unique=True, nullable=False)
     website = Column(String)
     status = Column(String, nullable=False, default="unverified")
+    reject_reason = Column(String)
 
     # Constraints
     __table_args__ = (
         CheckConstraint("status in ('unverified', 'rejected', 'accepted')"),
+        CheckConstraint("reject_reason is not null or status != 'rejected'"),
     )
 
     # Relationships

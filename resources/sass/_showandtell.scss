@@ -61,7 +61,8 @@ span.dot-sep {
     }
 
     &.project-status {
-        padding-left: 18px;
+        width: 50px;
+        text-align: center;
         font-size: 2em;
 
         span {
