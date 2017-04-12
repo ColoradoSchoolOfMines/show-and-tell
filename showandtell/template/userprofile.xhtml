@@ -6,8 +6,8 @@
     <body py:block="body" py:strip="True">
         <div class="row profile">
             <div class="col-md-3" >
-                <div class="profile-pic" style="background-image: url('/user/${profile.multipass_username}/profile_pic.jpg');">
-                    <img src="/user/${profile.multipass_username}/profile_pic.jpg" alt="profile picture" width="150" height="150" />
+                <div class="profile-pic" style="background-image: url('/user/${profile.multipass_username}/profile_pic');">
+                    <img src="/user/${profile.multipass_username}/profile_pic" alt="profile picture" width="150" height="150" />
                 </div>
             </div>
 
@@ -40,6 +40,7 @@
                             data-collapse="#profile-display">Edit</button>
                     </p>
                 </div>
+
                 <form id="profile-edit"
                       class="collapse profile-edit form-horizontal"
                       method="post"
@@ -50,13 +51,13 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Name:</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" name="name" value="${profile.name}"/>
+                            <input class="form-control" type="text" name="name" required="required" value="${profile.name}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Profile Picture:</label>
                         <div class="col-md-8">
-                            <input type="file" name="profile_pic" value="${profile.profile_pic and profile.profile_pic.name}" />
+                            <input type="file" name="profile_pic" />
                         </div>
                     </div>
                     <div class="form-group">

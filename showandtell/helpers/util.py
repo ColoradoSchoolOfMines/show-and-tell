@@ -47,11 +47,11 @@ def extra_template_context(identity):
     return context
 
 
-def glyphicon(icon_name):
+def glyphicon(icon_name, **kwargs):
     return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
 
 
-def faicon(icon_name):
+def faicon(icon_name, **kwargs):
     return Markup('<span class="fa fa-%s"></span>' % icon_name)
 
 

@@ -18,10 +18,13 @@ def admin_panel():
 
     t = Team('Mehtabyte')
     algobowl = Project(t, 'AlgoBowl', 'Cool project', 'shell_script')
+    algobowl.status = 'verified'
     dp = Project(t, 'Dynamic Programming', 'Cool project', 'shell_script')
+    sat = Project(t, 'Show and Tell', 'this', 'website')
+    sat.status = 'rejected'
 
     return {
-        'projects': [algobowl, dp],
+        'projects': [algobowl, dp, sat],
         'page': 'admin',
     }
 

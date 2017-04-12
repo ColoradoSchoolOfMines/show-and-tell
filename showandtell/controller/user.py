@@ -54,8 +54,8 @@ def do_user_edit(username):
             db.session.add(pic_asset)
 
     if not validators.length(name, min=1):
-        # TODO: Blow up
-        pass
+        # Abort nicely
+        abort(404, 'Bad person')
 
     if not website.startswith('http://') and not website.startswith('https://'):
         website = 'http://' + website
@@ -74,7 +74,7 @@ def do_user_edit(username):
     redirect('/user/%s' % username)
 
 
-@route('/user/<username>/profile_pic.jpg')
+@route('/user/<username>/profile_pic')
 def profile_pic(username):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\

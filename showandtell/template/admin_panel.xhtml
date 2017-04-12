@@ -17,6 +17,7 @@
                     <div class="panel-heading">Projects</div>
                     <table class="table table-hover">
                         <tr>
+                            <th>Status</th>
                             <th>Project Name</th>
                             <th>Team</th>
                             <th>Description</th>
@@ -26,13 +27,16 @@
                             <th>Reject/Verify</th>
                         </tr>
                         <tr py:for="p in projects">
+                            <td class="project-status">
+                                <span class="fa fa-${{'unverified': 'question', 'verified': 'check', 'rejected': 'times'}[p.status]}-circle-o ${p.status}"></span>
+                            </td>
                             <td>${p.name}</td>
                             <td>${p.team.name}</td>
                             <td>${p.description}</td>
                             <td>${p.type}</td>
                             <td>${p.website}</td>
                             <td><a href="">Dowload Assets</a></td>
-                            <td>
+                            <td class="reject-verify">
                                 <button class="btn btn-sm btn-danger">Reject</button>
                                 <button class="btn btn-sm btn-success">Verify</button>
                             </td>
