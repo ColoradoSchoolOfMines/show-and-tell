@@ -4,7 +4,7 @@
 User Controller
 """
 
-from bottle import route, get, post, request, redirect, static_file
+from bottle import route, get, post, request, redirect, static_file, abort
 from showandtell import db, kajiki_view, helpers, model
 import validators
 import os
@@ -15,6 +15,10 @@ import os
 def user_profile(username):
     user = db.session.query(model.Person).filter_by(
         multipass_username=username)
+
+    if not user.first():
+        abort(404, 'No profile found for %s' % username)
+
     return {
         'profile': user.one(),
         'page': 'user_profile',
@@ -23,8 +27,9 @@ def user_profile(username):
 
 @post('/user/<username>/edit')
 def do_user_edit(username):
-    if model.Session.get_identity(request).multipass_username != username:
-        return 'Cannot edit this'
+    session_identity = model.Session.get_identity(request)
+    if session_identity and session_identity.multipass_username != username:
+        abort(403, 'You are not allowed to edit users other than yourself')
 
     profile = db.session.query(model.Person)\
         .filter_by(multipass_username=username).one()
@@ -36,20 +41,17 @@ def do_user_edit(username):
     profile_pic = request.files.get('profile_pic')
 
     if profile_pic:
-        if not profile_pic.filename or not profile_pic.file:
-            # TODO: Blow up
-            pass
+        if profile_pic.filename and profile_pic.file:
+            # For some reason this isn't working, just use the dumb split
+            #name, ext = os.path.splittext(profile_pic.filename)
+            ext = profile_pic.filename.split('.', 1)[-1]
+            if ext not in ('png', 'jpg', 'jpeg', 'gif'):
+                return 'File extension not allowed'
 
-        # For some reason this isn't working, just use the dumb split
-        #name, ext = os.path.splittext(profile_pic.filename)
-        ext = profile_pic.filename.split('.', 1)[-1]
-        if ext not in ('png', 'jpg', 'jpeg', 'gif'):
-            return 'File extension not allowed'
-
-        pic_asset = model.Asset(profile_pic.filename, ext[1:],
-                                helpers.util.save_asset(profile_pic))
-        profile.profile_pic = pic_asset
-        db.session.add(pic_asset)
+            pic_asset = model.Asset(profile_pic.filename, ext[1:],
+                                    helpers.util.save_asset(profile_pic))
+            profile.profile_pic = pic_asset
+            db.session.add(pic_asset)
 
     if not validators.length(name, min=1):
         # TODO: Blow up
@@ -70,15 +72,17 @@ def do_user_edit(username):
 
 
 @route('/user/<username>/profile_pic.jpg')
-def profile_pics(username):
+def profile_pic(username):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\
         .filter_by(multipass_username=username).first()
 
     if profile_pic is None:
         # If they haven't uploaded a profile pic yet, show the default one
-        return static_file('default-profile-pic.png', root='resources/images', mimetype='image/png')
+        return static_file('default-profile-pic.png', root='resources/images',
+                           mimetype='image/png')
 
+    # Find the file on disk and serve it up
     base_path = helpers.util.from_config_yaml('asset_save_location')
     return static_file(profile_pic.filename, root=base_path,
                        mimetype='image/%s' % profile_pic.type)

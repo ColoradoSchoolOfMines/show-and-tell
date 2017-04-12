@@ -4,8 +4,9 @@
 Show and Tell
 """
 
-from bottle import run
 import showandtell
+
+from bottle import run
 
 # Create the Database
 showandtell.db.Base.metadata.create_all()

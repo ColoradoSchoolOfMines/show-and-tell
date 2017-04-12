@@ -26,8 +26,12 @@ class Session(Base):
             session.commit()
 
         self.user_id = person.user_id
-        self.expires_on = datetime.datetime.now()
         self.session_cookie = session_token
+
+        # Expire Token in a Month
+        expiry_date = datetime.datetime.now()
+        expiry_date.month += 1
+        self.expires_on = expiry_date
 
     @staticmethod
     def get_identity(request):

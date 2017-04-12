@@ -1,0 +1,43 @@
+/* Because of the floating nav bar */
+body {
+    padding-top: 70px;
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 45px;
+    padding: 35px 30px 36px;
+    border-top: 1px solid #e5e5e5;
+
+    p {
+        margin-bottom: 0;
+        color: $gray;
+    }
+}
+
+/* Dot separator */
+span.dot-sep {
+    padding: 0 5px;
+}
+
+.row {
+    &.profile {
+        margin-bottom: 30px;
+
+        .profile-pic {
+            @include box-shadow(0 0 6px rgba(0, 0, 0, 0.8));
+            @include border-radius(75px);
+
+            width: 150px;
+            height: 150px;
+            background-size: 150px 150px;
+            background-repeat: no-repeat;
+            margin: 0 auto;
+
+            img {
+                opacity: 0;
+                filter: alpha(opacity = 0);
+            }
+        }
+    }
+}
