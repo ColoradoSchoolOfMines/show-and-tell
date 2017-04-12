@@ -1,3 +1,14 @@
+// Correct the weird issues with the navbar styling
+.navbar-default {
+    .navbar-right {
+        margin-right: 0;
+    }
+
+    .dropdown-menu > li > a:hover {
+        color: white;
+    }
+}
+
 /* Because of the floating nav bar */
 body {
     padding-top: 70px;
@@ -44,4 +55,27 @@ span.dot-sep {
 
 .table > tbody > tr > td {
     vertical-align: middle;
+
+    &.reject-verify {
+        width: 130px;
+    }
+
+    &.project-status {
+        padding-left: 18px;
+        font-size: 2em;
+
+        span {
+            &.unverified {
+                color: $gray;
+            }
+
+            &.verified {
+                color: $verified;
+            }
+
+            &.rejected {
+                color: $rejected;
+            }
+        }
+    }
 }
