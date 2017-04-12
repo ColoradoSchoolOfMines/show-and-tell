@@ -44,6 +44,7 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button">${identity.name} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/user/${identity.multipass_username}">Profile</a></li>
+                                <li><a py:if="not identity.is_admin" href="/admin">Admin</a></li>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
                         </li>

@@ -8,7 +8,7 @@ from showandtell import helpers
 from showandtell.db import Base
 from showandtell.model.association_tables import person_team_xref
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
 
 
@@ -27,6 +27,7 @@ class Person(Base):
     bio = Column(String)
     github_username = Column(String)
     website = Column(String)
+    is_admin = Column(Boolean, default=False)
 
     # Relationships
     profile_pic = relationship('Asset', back_populates='person')
