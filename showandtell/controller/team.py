@@ -12,14 +12,18 @@ import os
 @route('/team/<id>')
 @kajiki_view('team')
 def team_profile(id):
+	pass
 
 @get('/team/new')
 @kajiki_view('team')
 def team_profile_new():
+	pass
 
 @post('/team/new')
 def team_profile_new():
+	pass
 
 
 @post('/team/<id>/edit')
 def do_edit_team(id):
+	pass
