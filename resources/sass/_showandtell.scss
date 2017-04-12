@@ -41,16 +41,18 @@ span.dot-sep {
 
             width: 150px;
             height: 150px;
-            background-size: 150px 150px;
-            background-repeat: no-repeat;
             margin: 0 auto;
-
-            img {
-                opacity: 0;
-                filter: alpha(opacity = 0);
-            }
         }
     }
+}
+
+.profile-pic-small {
+    @include box-shadow(0 0 3px rgba(0, 0, 0, 0.8));
+    @include border-radius(15px);
+
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
 }
 
 .table > tbody > tr > td {

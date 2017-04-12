@@ -5,10 +5,8 @@
 
     <body py:block="body" py:strip="True">
         <div class="row profile">
-            <div class="col-md-3" >
-                <div class="profile-pic" style="background-image: url('/user/${profile.multipass_username}/profile_pic');">
-                    <img src="/user/${profile.multipass_username}/profile_pic" alt="profile picture" width="150" height="150" />
-                </div>
+            <div class="col-md-3">
+                <img class="profile-pic" src="/user/${profile.multipass_username}/profile_pic" alt="profile picture" width="150" height="150" />
             </div>
 
             <div id="profile-display-edit" class="col-md-9">
@@ -100,10 +98,10 @@
                     <div class="panel-heading">Teams</div>
                     <table class="table table-hover">
                         <tr py:for="t in teams">
-                            <td width="35">
-                                <img src="/team/${t.team_id}/team_pic" width="30" height="30" />
+                            <td>
+                                <img class="profile-pic-small" src="/team/${t.team_id}/team_pic" width="30" height="30" />
+                                <a href="/team/${t.team_id}">${t.name}</a>
                             </td>
-                            <td><a href="/team/${t.team_id}">${t.name}</a></td>
                         </tr>
                     </table>
                 </div>

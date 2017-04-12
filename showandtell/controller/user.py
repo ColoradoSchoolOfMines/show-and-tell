@@ -15,14 +15,14 @@ import os
 def user_profile(username):
     user_query = db.session.query(model.Person).filter_by(
         multipass_username=username)
-    
+
     if not user_query.first():
         abort(404, 'No profile found for %s' % username)
 
     user = user_query.one()
 
     return {
-        'teams': user.teams,
+        'teams': user.teams or [],
         'profile': user,
         'page': 'user_profile',
     }
