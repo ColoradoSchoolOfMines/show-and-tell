@@ -11,10 +11,11 @@ from sqlalchemy.orm import relationship
 
 class Asset(Base):
 
-    def __init__(self, name, type, filename):
+    def __init__(self, name, type, filename, thumbnail = None):
         self.name = name
         self.type = type
         self.filename = filename
+        self.thumbnail = thumbnail
 
     __tablename__ = 'assets'
 
@@ -23,6 +24,7 @@ class Asset(Base):
     name = Column(String, nullable=False)
     type = Column(String, nullable=False)
     filename = Column(String, nullable=False)
+    thumbnail = Column(String, nullable=True)
 
     team = relationship('Team', back_populates='profile_pic')
     person = relationship('Person', back_populates='profile_pic')

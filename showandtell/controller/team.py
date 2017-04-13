@@ -65,16 +65,13 @@ def do_edit_team(id):
 
     if profile_pic:
         if profile_pic.filename and profile_pic.file:
-            # For some reason this isn't working, just use the dumb split
-            #name, ext = os.path.splittext(profile_pic.filename)
-            ext = profile_pic.filename.split('.', 1)[-1]
-            if ext not in ('png', 'jpg', 'jpeg', 'gif'):
-                return 'File extension not allowed'
-
-            pic_asset = model.Asset(profile_pic.filename, ext[1:],
-                                    helpers.util.save_asset(profile_pic))
-            team.profile_pic = pic_asset
-            db.session.add(pic_asset)
+            try:
+                (pic, thumb) = helpers.util.upload_profile_pic(profile_pic)
+            except IOError as err:
+                return "{}".format(err)
+            asset = model.Asset(profile_pic.filename, "png", pic, thumbnail = thumb)
+            team.profile_pic = asset
+            db.session.add(asset)
 
     if not validators.length(name, min=1):
         # TODO: Blow up
@@ -94,20 +91,26 @@ def do_edit_team(id):
 
     redirect('/team/%s' % id)
 
-@route('/team/<id>/team_pic')
-def profile_pic(id):
-    team_pic = db.session.query(model.Asset)\
+def get_pic(id, thumb = False):
+    profile_pic = db.session.query(model.Asset)\
         .join(model.Team)\
         .filter_by(team_id=id).first()
 
-    print(team_pic)
-
-    if team_pic is None:
+    if profile_pic is None:
         # If they haven't uploaded a profile pic yet, show the default one
         return static_file('default-team-pic.png', root='resources/images',
                            mimetype='image/png')
 
     # Find the file on disk and serve it up
     base_path = helpers.util.from_config_yaml('asset_save_location')
-    return static_file(team_pic.filename, root=base_path,
-                       mimetype='image/%s' % team_pic.type)
+    return static_file(profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename,
+                       root=base_path, mimetype='image/png')
+
+
+@route('/team/<id>/profile_pic.png')
+def profile_pic(id):
+    return get_pic(id)
+
+@route('/team/<id>/profile_thumb.png')
+def profile_thumb(id):
+    return get_pic(id, thumb = True)

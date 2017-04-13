@@ -5,7 +5,7 @@
     <body py:block="body" py:strip="True">
         <div class="row profile">
             <div class="col-md-3">
-                <img class="profile-pic" src="/team/${team.team_id}/team_pic" alt="profile picture" width="150" height="150" />
+                <img class="profile-pic" src="/team/${team.team_id}/profile_pic.png" alt="profile picture" width="150" height="150" />
             </div>
             <div id="profile-display-edit" class="col-md-9">
                 <div id="profile-display" aria-expanded="true" class="collapse ${'in' if not is_new else ''} profile-display">
@@ -72,7 +72,7 @@
                     <table class="table table-hover">
                         <tr py:for="m in team.members">
                             <td>
-                                <img class="profile-pic-small" src="/user/${m.multipass_username}/profile_pic" width="30" height="30" />
+                                <img class="profile-pic-small" src="/user/${m.multipass_username}/profile_thumb.png" width="32" height="32" />
                                 <a href="/user/${m.multipass_username}">${m.name}</a>
                             </td>
                             <td width="90">
