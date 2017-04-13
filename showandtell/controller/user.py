@@ -24,9 +24,13 @@ def user_profile(username):
 
     user = user_query.one()
 
+    teams = user.teams or []
+    projects = [] if len(user.teams) == 0 else \
+        ft.reduce(operator.add, [t.projects for t in user.teams])
+
     return {
-        'teams': user.teams or [],
-        'projects': ft.reduce(operator.add, [t.projects for t in user.teams]),
+        'teams': teams,
+        'projects': projects,
         'profile': user,
         'page': 'user_profile',
     }
@@ -53,7 +57,8 @@ def do_user_edit(username):
                 (pic, thumb) = helpers.util.upload_profile_pic(profile_pic)
             except IOError as err:
                 return "{}".format(err)
-            asset = model.Asset(profile_pic.filename, "png", pic, thumbnail = thumb)
+            asset = model.Asset(profile_pic.filename,
+                                "png", pic, thumbnail=thumb)
             profile.profile_pic = asset
             db.session.add(asset)
 
@@ -77,7 +82,8 @@ def do_user_edit(username):
 
     redirect('/user/%s' % username)
 
-def get_pic(username, thumb = False):
+
+def get_pic(username, thumb=False):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\
         .filter_by(multipass_username=username).first()
@@ -89,7 +95,7 @@ def get_pic(username, thumb = False):
 
     # Find the file on disk and serve it up
     base_path = helpers.util.from_config_yaml('asset_save_location')
-    return static_file(profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename, 
+    return static_file(profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename,
                        root=base_path, mimetype='image/png')
 
 
@@ -97,6 +103,7 @@ def get_pic(username, thumb = False):
 def profile_pic(username):
     return get_pic(username)
 
+
 @route('/user/<username>/profile_thumb.png')
 def profile_thumb(username):
-    return get_pic(username, thumb = True)
+    return get_pic(username, thumb=True)

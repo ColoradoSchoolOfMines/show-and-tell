@@ -104,7 +104,7 @@
                             </td>
                             <td class="team-members">
                                 <img py:for="m in t.members" class="profile-pic-small"
-                                                             src="/user/${m.multipass_username}/profile_pic"
+                                                             src="/user/${m.multipass_username}/profile_thumb.png"
                                                              width="30"
                                                              height="30" />
                             </td>
@@ -125,7 +125,7 @@
                 <tr py:for="p in projects">
                     <td>${p.name}</td>
                     <td>
-                        <img class="profile-pic-small" src="/team/${t.team_id}/team_pic" width="30" height="30" />
+                        <img class="profile-pic-small" src="/team/${t.team_id}/profile_thumb.png" width="30" height="30" />
                         <a href="/team/${t.team_id}">${t.name}</a>
                     </td>
                 </tr>
