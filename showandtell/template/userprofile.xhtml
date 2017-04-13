@@ -102,6 +102,12 @@
                                 <img class="profile-pic-small" src="/team/${t.team_id}/team_pic" width="30" height="30" />
                                 <a href="/team/${t.team_id}">${t.name}</a>
                             </td>
+                            <td class="team-members">
+                                <img py:for="m in t.members" class="profile-pic-small"
+                                                             src="/user/${m.multipass_username}/profile_pic"
+                                                             width="30"
+                                                             height="30" />
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -110,9 +116,20 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">Projects</div>
-            <div class="panel-body">
-                TODO: PUT THE PROJECTS HERE
-            </div>
+            <table class="table table-hover">
+                <tr>
+                    <th>Project Name</th>
+                    <th>Team Name</th>
+                </tr>
+
+                <tr py:for="p in projects">
+                    <td>${p.name}</td>
+                    <td>
+                        <img class="profile-pic-small" src="/team/${t.team_id}/team_pic" width="30" height="30" />
+                        <a href="/team/${t.team_id}">${t.name}</a>
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>

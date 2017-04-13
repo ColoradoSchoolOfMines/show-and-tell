@@ -4,10 +4,13 @@
 User Controller
 """
 
-from bottle import route, get, post, request, redirect, static_file, abort
-from showandtell import db, kajiki_view, helpers, model
 import validators
 import os
+import functools as ft
+import operator
+
+from bottle import route, get, post, request, redirect, static_file, abort
+from showandtell import db, kajiki_view, helpers, model
 
 
 @route('/user/<username>')
@@ -23,6 +26,7 @@ def user_profile(username):
 
     return {
         'teams': user.teams or [],
+        'projects': ft.reduce(operator.add, [t.projects for t in user.teams]),
         'profile': user,
         'page': 'user_profile',
     }
