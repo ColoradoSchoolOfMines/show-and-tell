@@ -54,9 +54,34 @@ def glyphicon(icon_name, **kwargs):
 def faicon(icon_name, **kwargs):
     return Markup('<span class="fa fa-%s"></span>' % icon_name)
 
-
-def save_asset(uploaded_file):
+def make_path():
     base_path = from_config_yaml('asset_save_location')
     real_filename = str(uuid.uuid4())
-    uploaded_file.save(os.path.join(base_path, real_filename))
-    return real_filename
+    return (os.path.join(base_path, real_filename), real_filename)
+
+
+def save_asset(uploaded_file):
+    (full_path, filename) = make_path()
+    uploaded_file.save(full_path)
+    return filename
+
+from PIL import Image
+
+def upload_profile_pic(uploaded_file):
+    if uploaded_file.content_length > 20000000:
+        raise IOError('Content is too large')
+    img = Image.open(uploaded_file.file)
+
+    (w, h) = img.size
+    s = min(w, h)
+    tb = (h - s) / 2
+    lr = (w - s) / 2
+    img = img.crop((lr, tb, w - lr, h - tb))
+
+    imgpath = make_path()
+    img.resize((300, 300)).save(imgpath[0], format='png')
+    thumbpath = make_path()
+    img.thumbnail((64, 64))
+    img.save(thumbpath[0], format='png')
+
+    return (imgpath[1], thumbpath[1])

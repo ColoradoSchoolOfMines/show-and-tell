@@ -45,16 +45,13 @@ def do_user_edit(username):
 
     if profile_pic:
         if profile_pic.filename and profile_pic.file:
-            # For some reason this isn't working, just use the dumb split
-            #name, ext = os.path.splittext(profile_pic.filename)
-            ext = profile_pic.filename.split('.', 1)[-1]
-            if ext not in ('png', 'jpg', 'jpeg', 'gif'):
-                return 'File extension not allowed'
-
-            pic_asset = model.Asset(profile_pic.filename, ext[1:],
-                                    helpers.util.save_asset(profile_pic))
-            profile.profile_pic = pic_asset
-            db.session.add(pic_asset)
+            try:
+                (pic, thumb) = helpers.util.upload_profile_pic(profile_pic)
+            except IOError as err:
+                return "{}".format(err)
+            asset = model.Asset(profile_pic.filename, "png", pic, thumbnail = thumb)
+            profile.profile_pic = asset
+            db.session.add(asset)
 
     if not validators.length(name, min=1):
         # Abort nicely
@@ -76,9 +73,7 @@ def do_user_edit(username):
 
     redirect('/user/%s' % username)
 
-
-@route('/user/<username>/profile_pic')
-def profile_pic(username):
+def get_pic(username, thumb = False):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\
         .filter_by(multipass_username=username).first()
@@ -90,5 +85,14 @@ def profile_pic(username):
 
     # Find the file on disk and serve it up
     base_path = helpers.util.from_config_yaml('asset_save_location')
-    return static_file(profile_pic.filename, root=base_path,
-                       mimetype='image/%s' % profile_pic.type)
+    return static_file(profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename, 
+                       root=base_path, mimetype='image/png')
+
+
+@route('/user/<username>/profile_pic.png')
+def profile_pic(username):
+    return get_pic(username)
+
+@route('/user/<username>/profile_thumb.png')
+def profile_thumb(username):
+    return get_pic(username, thumb = True)
