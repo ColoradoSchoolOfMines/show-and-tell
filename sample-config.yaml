@@ -2,3 +2,4 @@ db: postgresql://localhost/showandtell
 mpapi_base: https://mastergo.mines.edu/mpapi/
 app_name: Show and Tell
 asset_save_location: /tmp/sat-assets
+admin_edit: false

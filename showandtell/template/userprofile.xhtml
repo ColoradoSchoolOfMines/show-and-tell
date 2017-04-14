@@ -29,7 +29,7 @@
                         ${util.glyphicon('globe')} ${profile.website}
                     </a>
                     </p>
-                    <p py:if="identity.multipass_username == profile.multipass_username">
+                    <p py:if="can_edit">
                     <button type="button"
                             class="btn btn-default"
                             aria-expabnded="true"
@@ -45,7 +45,7 @@
                       aria-expanded="false"
                       enctype="multipart/form-data"
                       action="/user/${profile.multipass_username}/edit"
-                      py:if="identity.multipass_username == profile.multipass_username">
+                      py:if="can_edit">
                     <div class="form-group">
                         <label class="col-md-3 control-label">Name:</label>
                         <div class="col-md-8">

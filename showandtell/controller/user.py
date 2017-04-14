@@ -13,13 +13,23 @@ from bottle import route, get, post, request, redirect, static_file, abort
 from showandtell import db, kajiki_view, helpers, model
 from sqlalchemy import or_
 
+def can_edit(ident, user):
+    admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
+    return (ident and ident == user) or admin_edit
+
+def query_user(username, edit=False):
+    ident = model.Session.get_identity(request)
+    user = db.session.query(model.Person).filter_by(multipass_username=username).first()
+
+    if edit and not can_edit(ident, user):
+        abort(403, 'You do not have permission to edit this user')
+
+    return (user, ident)
 
 @route('/user/<username>')
 @kajiki_view('userprofile')
 def user_profile(username):
-    user = db.session.query(model.Person)\
-        .filter_by(multipass_username=username)\
-        .first()
+    (user, ident) = query_user(username)
 
     if not user:
         abort(404, 'No profile found for %s' % username)
@@ -29,6 +39,7 @@ def user_profile(username):
         ft.reduce(operator.add, [t.projects for t in user.teams])
 
     return {
+        'can_edit': can_edit(ident, user),
         'teams': teams,
         'projects': projects,
         'profile': user,
@@ -38,12 +49,7 @@ def user_profile(username):
 
 @post('/user/<username>/edit')
 def do_user_edit(username):
-    session_identity = model.Session.get_identity(request)
-    if not session_identity or session_identity.multipass_username != username:
-        abort(403, 'You are not allowed to edit users other than yourself')
-
-    profile = db.session.query(model.Person)\
-        .filter_by(multipass_username=username).one()
+    (profile, ident) = query_user(username, edit=True)
 
     name = request.forms.get('name')
     bio = request.forms.get('bio')

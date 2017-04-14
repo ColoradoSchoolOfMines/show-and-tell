@@ -9,22 +9,31 @@ from showandtell import db, kajiki_view, helpers, model
 import validators
 import os
 
+def can_edit(ident, team):
+    admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
+    return (ident and ident in team.members) or admin_edit
+
+def query_team(id, edit=False):
+    user = model.Session.get_identity(request)
+    team = db.session.query(model.Team).filter_by(team_id=id).first()
+
+    if edit and not can_edit(user, team):
+        abort(403, 'You do not have permission to edit this team')
+
+    return (team, user)
+
 @route('/team/<id>')
 @kajiki_view('team')
 def team_profile(id):
-    user = model.Session.get_identity(request)
-    team_result = db.session.query(model.Team).filter_by(
-        team_id=id)
+    (team, user) = query_team(id)
 
-    if not team_result.first():
+    if not team:
         abort(404, 'No profile found for team #%s' % id)
-
-    team = team_result.one()
 
     return {
         'team': team,
         'is_new': bool(request.GET.get('just_created')),
-        'can_edit': user and user in team.members,
+        'can_edit': can_edit(user, team),
         'page': 'team_profile',
     }
 
@@ -48,19 +57,9 @@ def team_profile_new():
 
     redirect('/team/%s?just_created=true' % team.team_id)
 
-def query_team(id, edit=True):
-    user = model.Session.get_identity(request)
-    team = db.session.query(model.Team)\
-        .filter_by(team_id=id).one();
-
-    if edit and (not user or user not in team.members):
-        abort(403, 'You do not have permission to edit this team')
-
-    return (team, user)
-
 @post('/team/<id>/edit')
 def do_edit_team(id):
-    (team, user) = query_team(id)
+    (team, user) = query_team(id, edit=True)
 
     name = request.forms.get('name')
     website = request.forms.get('website')
@@ -94,27 +93,44 @@ def do_edit_team(id):
 
     redirect('/team/%s' % id)
 
+def add_member(uid, team):
+    person = db.session.query(model.Person).filter_by(user_id=uid).first()
+    if person: 
+        if person not in team.members: team.members.append(person)
+        else: abort(400, 'Person #%s is already a member of team' % uid)
+    else: abort(400, 'Person #%s does not exist' % uid)
+
+def remove_member(uid, team):
+    person = db.session.query(model.Person).filter_by(user_id=uid).first()
+    if person: 
+        if person in team.members: team.members.remove(person)
+        else: abort(400, 'Person #%s is not a member of team' % uid)
+    else: abort(400, 'Person #%s does not exist' % uid)
+
 @post('/team/<id>/members')
 def mod_members(id):
-    (team, user) = query_team(id)
+    (team, user) = query_team(id, edit=True)
 
-    add = request.json.get('add') or []
-    for p in add:
-        uid = p.get('user_id')
-        person = db.session.query(model.Person).filter_by(user_id=uid).first()
-        if person: 
-            if person not in team.members: team.members.append(person)
-            else: abort(400, 'Person #%s is already a member of team' % uid)
-        else: abort(400, 'Person #%s does not exist' % uid)
+    if not request.query.type or request.query.type == 'json':
+        add = request.json.get('add') or []
+        for p in add:
+            add_member(p.get('user_id'), team)
 
-    remove = request.json.get('remove') or []
-    for p in remove:
-        uid = p.get('user_id')
-        person = db.session.query(model.Person).filter_by(user_id=uid).first()
-        if person: 
-            if person in team.members: team.members.remove(person)
-            else: abort(400, 'Person #%s is not a member of team' % uid)
-        else: abort(400, 'Person #%s does not exist' % uid)
+        remove = request.json.get('remove') or []
+        for p in remove:
+            remove_member(p.get('user_id'), team)
+            
+    elif request.query.type == 'form':
+        add = request.forms.get('add')
+        if add: add_member(add, team)
+
+        remove = request.forms.get('remove')
+        if remove: remove_member(remove, team)
+
+        redirect('/team/%s' % id)
+
+    else:
+        abort(400, 'Member modification not form or json')
 
     db.session.commit()
 
