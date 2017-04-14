@@ -17,6 +17,13 @@ class Team(Base):
         self.name = name
         self.website = website
 
+    def info_dict(self):
+        return {
+            'team_id': self.team_id,
+            'name': self.name,
+            'website': self.website,
+        }
+
     __tablename__ = 'teams'
 
     # Fields
