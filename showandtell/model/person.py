@@ -12,14 +12,13 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
 
 
-class Person(Base, dict):
+class Person(Base):
 
     def __init__(self, username):
         self.multipass_username = username
         self.name = helpers.mpapi.user_info(username)['gecos']
 
-    def get_info_for_search(self):
-        """ Get Info for Search. Don't return anything unnecssary """
+    def info_dict(self):
         return {
             'user_id': self.user_id,
             'multipass_username': self.multipass_username,
@@ -31,7 +30,7 @@ class Person(Base, dict):
     # Fields
     user_id = Column(Integer, autoincrement=True, primary_key=True)
     profile_pic_id = Column(Integer, ForeignKey('assets.asset_id'))
-    multipass_username = Column(String, nullable=False)
+    multipass_username = Column(String, nullable=False, unique=True)
     name = Column(String, nullable=False)
     bio = Column(String)
     github_username = Column(String)
