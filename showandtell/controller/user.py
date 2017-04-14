@@ -11,7 +11,6 @@ import operator
 
 from bottle import route, get, post, request, redirect, static_file, abort
 from showandtell import db, kajiki_view, helpers, model
-from sqlalchemy import or_
 
 
 @route('/user/<username>')
@@ -81,16 +80,6 @@ def do_user_edit(username):
     db.session.commit()
 
     redirect('/user/%s' % username)
-
-
-@route('/search/users/<query>')
-def get_users(query):
-    people = db.session.query(model.Person)\
-        .filter((model.Person.multipass_username.ilike('%%%s%%' % query)) |
-                (model.Person.name.ilike('%%%s%%' % query)))\
-        .all()
-
-    return { 'people': [p.info_dict() for p in people] }
 
 
 def get_pic(username, thumb=False):
