@@ -103,14 +103,14 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Add Team Member</h4>
                     </div>
-                    <form method="post" action="/admin/PROJECT_ID/reject">
+                    <form method="post" action="/team/${team.team_id}/members">
                         <div class="modal-body">
                             <select id="select-user" class="selectize user" placeholder="Search for a user...">
                             </select>
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-                            <button type="submit" class="btn btn-danger">Reject</button>
+                            <button type="submit" class="btn btn-success">Add Team Member</button>
                         </div>
                     </form>
 

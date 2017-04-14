@@ -34,8 +34,7 @@ $(document).ready(function() {
                 searchField: 'name',
                 create: false,
                 render: {
-                    option: function(item, escape) {
-                        console.log(item);
+                    option: function(item) {
                         return '<div>' +
                             '<img src="/user/' + item.multipass_username + '/profile_pic.png" class="profile-pic-small""/>' +
                             item.name +
@@ -46,6 +45,7 @@ $(document).ready(function() {
                     if (!query.length) {
                         return callback();
                     }
+
                     $.ajax({
                         url: '/search/users/' + encodeURIComponent(query),
                         type: 'GET',
