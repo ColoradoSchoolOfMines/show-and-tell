@@ -100,7 +100,11 @@ def mod_members(id):
 
     add = request.json.get('add') or []
     for p in add:
+<<<<<<< HEAD
         uid = p.get('id')
+=======
+        uid = p.get('user_id')
+>>>>>>> 5f64e6495714b8696bfead7d71dc8325b43c20d2
         person = db.session.query(model.Person).filter_by(user_id=uid).first()
         if person: 
             if person not in team.members: team.members.append(person)
@@ -109,7 +113,7 @@ def mod_members(id):
 
     remove = request.json.get('remove') or []
     for p in remove:
-        uid = p.get('id')
+        uid = p.get('user_id')
         person = db.session.query(model.Person).filter_by(user_id=uid).first()
         if person: 
             if person in team.members: team.members.remove(person)
