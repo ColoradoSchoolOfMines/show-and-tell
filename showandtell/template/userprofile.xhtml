@@ -99,14 +99,18 @@
                     <table class="table table-hover">
                         <tr py:for="t in teams">
                             <td>
-                                <img class="profile-pic-small" src="/team/${t.team_id}/profile_thumb.png" width="32" height="32" />
-                                <a href="/team/${t.team_id}">${t.name}</a>
+                                <a href="/team/${t.team_id}">
+                                    <img class="profile-pic-small" src="/team/${t.team_id}/profile_thumb.png" width="32" height="32" />
+                                    ${t.name}
+                                </a>
                             </td>
                             <td class="team-members">
-                                <img py:for="m in t.members" class="profile-pic-small"
-                                                             src="/user/${m.multipass_username}/profile_thumb.png"
-                                                             width="30"
-                                                             height="30" />
+                                <a py:for="m in t.members" href="/user/${m.multipass_username}">
+                                    <img class="profile-pic-small"
+                                         src="/user/${m.multipass_username}/profile_thumb.png"
+                                         width="30"
+                                         height="30" />
+                                </a>
                             </td>
                         </tr>
                     </table>
