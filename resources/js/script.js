@@ -47,7 +47,7 @@ $(document).ready(function() {
                         return callback();
                     }
                     $.ajax({
-                        url: '/user/search/' + encodeURIComponent(query),
+                        url: '/search/users/' + encodeURIComponent(query),
                         type: 'GET',
                         error: function() {
                             callback();

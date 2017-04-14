@@ -17,13 +17,12 @@ from sqlalchemy import or_
 @route('/user/<username>')
 @kajiki_view('userprofile')
 def user_profile(username):
-    user_query = db.session.query(model.Person).filter_by(
-        multipass_username=username)
+    user = db.session.query(model.Person)\
+        .filter_by(multipass_username=username)\
+        .first()
 
-    if not user_query.first():
+    if not user:
         abort(404, 'No profile found for %s' % username)
-
-    user = user_query.one()
 
     teams = user.teams or []
     projects = [] if len(user.teams) == 0 else \
@@ -84,16 +83,14 @@ def do_user_edit(username):
     redirect('/user/%s' % username)
 
 
-@route('/user/search/<query>')
+@route('/search/users/<query>')
 def get_users(query):
     people = db.session.query(model.Person)\
         .filter((model.Person.multipass_username.ilike('%%%s%%' % query)) |
                 (model.Person.name.ilike('%%%s%%' % query)))\
         .all()
 
-    return {
-        'people': [p.get_info_for_search() for p in people],
-    }
+    return { 'people': [p.info_dict() for p in people] }
 
 
 def get_pic(username, thumb=False):

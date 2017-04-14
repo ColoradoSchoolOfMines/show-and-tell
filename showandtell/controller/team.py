@@ -98,31 +98,23 @@ def do_edit_team(id):
 def mod_members(id):
     (team, user) = query_team(id)
 
-    print(team.members)
+    add = request.json.get('add') or []
+    for p in add:
+        uid = p.get('user_id')
+        person = db.session.query(model.Person).filter_by(user_id=uid).first()
+        if person: 
+            if person not in team.members: team.members.append(person)
+            else: abort(400, 'Person #%s is already a member of team' % uid)
+        else: abort(400, 'Person #%s does not exist' % uid)
 
-    mlist = [p.multipass_username for p in team.members]
-
-    add = request.json.get('add')
-    if add: 
-        for p in add:
-            uname = p.get('multipass_username')
-            person = db.session.query(model.Person).filter_by(multipass_username=uname).first()
-            if person: 
-                if person not in team.members: team.members.append(person)
-                else: abort(400, 'Person "%s" is already a member of team' % uname)
-            else: abort(400, 'Person %s does not exist' % uname)
-
-    remove = request.json.get('remove')
-    if remove: 
-        for p in remove:
-            uname = p.get('multipass_username')
-            person = db.session.query(model.Person).filter_by(multipass_username=uname).first()
-            if person: 
-                if person in team.members: team.members.remove(person)
-                else: abort(400, 'Person "%s" is not a member of team' % uname)
-            else: abort(400, 'Person %s does not exist' % uname)
-
-    print(team.members)
+    remove = request.json.get('remove') or []
+    for p in remove:
+        uid = p.get('user_id')
+        person = db.session.query(model.Person).filter_by(user_id=uid).first()
+        if person: 
+            if person in team.members: team.members.remove(person)
+            else: abort(400, 'Person #%s is not a member of team' % uid)
+        else: abort(400, 'Person #%s does not exist' % uid)
 
     db.session.commit()
 
@@ -132,7 +124,7 @@ def get_members(id):
 
     out = []
     for p in team.members:
-        out.append({'name': p.name, 'multipass_username': p.multipass_username})
+        out.append(p.info_dict())
 
     return {'members': out}
 

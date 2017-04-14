@@ -77,11 +77,11 @@
                                     ${m.name}
                                 </a>
                             </td>
-                            <td width="90">
+                            <td width="90" py:if="can_edit">
                                 <button class="btn btn-sm btn-danger">Remove</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr py:if="can_edit">
                             <td>
                                 <a class="btn btn-default"
                                    href="#"
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <div id="add-team-member" class="modal fade" role="dialog">
+        <div id="add-team-member" class="modal fade" role="dialog" py:if="can_edit">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
