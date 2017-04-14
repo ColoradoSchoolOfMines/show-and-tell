@@ -12,10 +12,19 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
 
 
-class Person(Base):
+class Person(Base, dict):
+
     def __init__(self, username):
         self.multipass_username = username
         self.name = helpers.mpapi.user_info(username)['gecos']
+
+    def get_info_for_search(self):
+        """ Get Info for Search. Don't return anything unnecssary """
+        return {
+            'user_id': self.user_id,
+            'multipass_username': self.multipass_username,
+            'name': self.name,
+        }
 
     __tablename__ = 'people'
 
@@ -31,5 +40,6 @@ class Person(Base):
 
     # Relationships
     profile_pic = relationship('Asset', back_populates='person')
-    teams = relationship('Team', secondary=person_team_xref, back_populates='members')
+    teams = relationship('Team', secondary=person_team_xref,
+                         back_populates='members')
     sessions = relationship('Session', back_populates="user")

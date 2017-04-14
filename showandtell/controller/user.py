@@ -11,6 +11,7 @@ import operator
 
 from bottle import route, get, post, request, redirect, static_file, abort
 from showandtell import db, kajiki_view, helpers, model
+from sqlalchemy import or_
 
 
 @route('/user/<username>')
@@ -83,6 +84,18 @@ def do_user_edit(username):
     redirect('/user/%s' % username)
 
 
+@route('/user/search/<query>')
+def get_users(query):
+    people = db.session.query(model.Person)\
+        .filter((model.Person.multipass_username.ilike('%%%s%%' % query)) |
+                (model.Person.name.ilike('%%%s%%' % query)))\
+        .all()
+
+    return {
+        'people': [p.get_info_for_search() for p in people],
+    }
+
+
 def get_pic(username, thumb=False):
     profile_pic = db.session.query(model.Asset)\
         .join(model.Person)\
@@ -95,8 +108,9 @@ def get_pic(username, thumb=False):
 
     # Find the file on disk and serve it up
     base_path = helpers.util.from_config_yaml('asset_save_location')
-    return static_file(profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename,
-                       root=base_path, mimetype='image/png')
+    return static_file(
+        profile_pic.thumbnail if thumb and profile_pic.thumbnail else profile_pic.filename,
+        root=base_path, mimetype='image/png')
 
 
 @route('/user/<username>/profile_pic.png')

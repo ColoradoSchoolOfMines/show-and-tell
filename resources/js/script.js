@@ -27,6 +27,39 @@ $(document).ready(function() {
             });
         }
 
+        if (el.hasClass('selectize')) {
+            el.selectize({
+                valueField: 'user_id',
+                labelField: 'name',
+                searchField: 'name',
+                create: false,
+                render: {
+                    option: function(item, escape) {
+                        console.log(item);
+                        return '<div>' +
+                            '<img src="/user/' + item.multipass_username + '/profile_pic.png" class="profile-pic-small""/>' +
+                            item.name +
+                            '</div>';
+                    }
+                },
+                load: function(query, callback) {
+                    if (!query.length) {
+                        return callback();
+                    }
+                    $.ajax({
+                        url: '/user/search/' + encodeURIComponent(query),
+                        type: 'GET',
+                        error: function() {
+                            callback();
+                        },
+                        success: function(response) {
+                            callback(response.people);
+                        },
+                    });
+                }
+            });
+        }
+
         var collapse_el = el.data('collapse');
 
         if (collapse_el) {
