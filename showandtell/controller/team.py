@@ -48,16 +48,19 @@ def team_profile_new():
 
     redirect('/team/%s?just_created=true' % team.team_id)
 
-
-@post('/team/<id>/edit')
-def do_edit_team(id):
+def query_team(id, edit=True):
     user = model.Session.get_identity(request)
     team = db.session.query(model.Team)\
         .filter_by(team_id=id).one();
 
-    if not user or user not in team.members:
+    if edit and (not user or user not in team.members):
         abort(403, 'You do not have permission to edit this team')
 
+    return (team, user)
+
+@post('/team/<id>/edit')
+def do_edit_team(id):
+    (team, user) = query_team(id)
 
     name = request.forms.get('name')
     website = request.forms.get('website')
@@ -90,6 +93,48 @@ def do_edit_team(id):
     db.session.commit()
 
     redirect('/team/%s' % id)
+
+@post('/team/<id>/members')
+def mod_members(id):
+    (team, user) = query_team(id)
+
+    print(team.members)
+
+    mlist = [p.multipass_username for p in team.members]
+
+    add = request.json.get('add')
+    if add: 
+        for p in add:
+            uname = p.get('multipass_username')
+            person = db.session.query(model.Person).filter_by(multipass_username=uname).first()
+            if person: 
+                if person not in team.members: team.members.append(person)
+                else: abort(400, 'Person "%s" is already a member of team' % uname)
+            else: abort(400, 'Person %s does not exist' % uname)
+
+    remove = request.json.get('remove')
+    if remove: 
+        for p in remove:
+            uname = p.get('multipass_username')
+            person = db.session.query(model.Person).filter_by(multipass_username=uname).first()
+            if person: 
+                if person in team.members: team.members.remove(person)
+                else: abort(400, 'Person "%s" is not a member of team' % uname)
+            else: abort(400, 'Person %s does not exist' % uname)
+
+    print(team.members)
+
+    db.session.commit()
+
+@get('/team/<id>/members')
+def get_members(id):
+    (team, user) = query_team(id)
+
+    out = []
+    for p in team.members:
+        out.append({'name': p.name, 'multipass_username': p.multipass_username})
+
+    return {'members': out}
 
 def get_pic(id, thumb = False):
     profile_pic = db.session.query(model.Asset)\
