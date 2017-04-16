@@ -5,20 +5,17 @@ Admin Page
 """
 
 from bottle import route, post, static_file, request, abort
-from showandtell import helpers, kajiki_view, db
+from showandtell import helpers, kajiki_view, db, security_check
 from showandtell.model import Project, Team, Session
 
 
 @route('/admin')
 @kajiki_view('admin_panel')
+@security_check('admin')
 def admin_panel():
-    identity = Session.get_identity(request)
-    if not identity or not identity.is_admin:
-        abort(403, 'You are not allowed to view the admin panel')
-
     t = Team('Mehtabyte')
-    algobowl = Project(
-        t, 'AlgoBowl', 'First place Spring 2017 AlgoBOWL project', 'shell_script')
+    algobowl = Project(t, 'AlgoBowl',
+                       'First place Spring 2017 AlgoBOWL project', 'shell_script')
     algobowl.status = 'verified'
     algobowl.project_id = 10
 
@@ -42,11 +39,8 @@ def admin_panel():
 
 
 @route('/admin/<project_id>/verify')
+@security_check('admin')
 def verify_project(project_id):
-    identity = Session.get_identity(request)
-    if not identity or not identity.is_admin:
-        abort(403, 'You are not allowed to view the admin panel')
-
     project = Project.get_by_id(project_id)
     project.verify()
 
@@ -54,11 +48,8 @@ def verify_project(project_id):
 
 
 @post('/admin/<project_id>/reject')
+@security_check('admin')
 def reject_project(project_id):
-    identity = Session.get_identity(request)
-    if not identity or not identity.is_admin:
-        abort(403, 'You are not allowed to view the admin panel')
-
     reason = request.forms.get('reason')
 
     if not reason or len(reason.split()) == 0:

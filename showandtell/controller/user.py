@@ -10,7 +10,7 @@ import functools as ft
 import operator
 
 from bottle import route, get, post, request, redirect, static_file, abort
-from showandtell import db, kajiki_view, helpers, model
+from showandtell import db, kajiki_view, helpers, model, security_check
 
 
 @route('/user/<username>')
@@ -36,11 +36,8 @@ def user_profile(username):
 
 
 @post('/user/<username>/edit')
+@security_check('same_user')
 def do_user_edit(username):
-    session_identity = model.Session.get_identity(request)
-    if not session_identity or session_identity.multipass_username != username:
-        abort(403, 'You are not allowed to edit users other than yourself')
-
     profile = db.session.query(model.Person)\
         .filter_by(multipass_username=username).one()
 
@@ -62,7 +59,7 @@ def do_user_edit(username):
             db.session.add(asset)
 
     if not validators.length(name, min=1):
-        # Abort nicely
+        # TODO: Abort nicely
         abort(404, 'Bad person')
 
     if website and not website.startswith('http://') and not website.startswith('https://'):

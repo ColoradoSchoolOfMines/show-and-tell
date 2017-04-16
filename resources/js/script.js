@@ -12,6 +12,10 @@ $(document).ready(function() {
         if (el.hasClass('modal')) {
             el.on('shown.bs.modal', function() {
                 var focus_el = $('.autofocus', el);
+                if (focus_el[0] && focus_el[0].selectize) {
+                    focus_el = focus_el[0].selectize;
+                }
+
                 if (focus_el) {
                     focus_el.focus();
                 }
@@ -47,7 +51,7 @@ $(document).ready(function() {
                     }
 
                     $.ajax({
-                        url: '/search/users/' + encodeURIComponent(query),
+                        url: '/search/users?q=' + encodeURIComponent(query),
                         type: 'GET',
                         error: function() {
                             callback();
