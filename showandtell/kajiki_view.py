@@ -6,7 +6,6 @@ Defines the Kajiki View Decorator
 
 import functools
 
-from bottle import request
 from showandtell import db, model
 from showandtell.helpers import util
 from kajiki import FileLoader, XMLTemplate
@@ -35,7 +34,7 @@ def kajiki_view(template_name):
 
                 t = Template({
                     **response,
-                    **util.extra_template_context(model.Session.get_identity(request))
+                    **util.extra_template_context(model.Session.get_identity())
                 })
                 return t.render()
             else:

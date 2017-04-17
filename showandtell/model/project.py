@@ -48,7 +48,10 @@ class Project(Base):
 
     # Constraints
     __table_args__ = (
+        # Prevent rouge statuses
         CheckConstraint("status in ('unverified', 'rejected', 'accepted')"),
+
+        # Require reject reason if project is rejected
         CheckConstraint("reject_reason is not null or status != 'rejected'"),
     )
 

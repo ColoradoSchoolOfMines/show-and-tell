@@ -4,7 +4,7 @@
 Search Controller
 """
 
-from bottle import route
+from bottle import route, request
 from showandtell import db, kajiki_view, helpers, model
 from showandtell.model import Person, Team
 

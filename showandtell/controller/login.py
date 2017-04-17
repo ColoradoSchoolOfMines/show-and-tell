@@ -55,9 +55,15 @@ def do_login():
 
 @route('/logout')
 def logout():
-    user_session = db.session.query(model.Session)\
-        .filter_by(session_cookie=request.get_cookie('session_token')).one()
-    db.session.delete(user_session)
-    db.session.commit()
-    response.delete_cookie('session_token')
-    redirect('/')
+    try:
+        user_session = db.session.query(model.Session)\
+            .filter_by(session_cookie=request.get_cookie('session_token'))\
+            .one()
+        db.session.delete(user_session)
+        db.session.commit()
+    except:
+        # TODO: Log the error
+        pass
+    finally:
+        response.delete_cookie('session_token')
+        redirect('/')

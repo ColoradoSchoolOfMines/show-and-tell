@@ -17,7 +17,7 @@ def can_edit(ident, user):
     return (ident and ident == user) or admin_edit
 
 def query_user(username, edit=False):
-    ident = model.Session.get_identity(request)
+    ident = model.Session.get_identity()
     user = db.session.query(model.Person).filter_by(multipass_username=username).first()
 
     if edit and not can_edit(ident, user):

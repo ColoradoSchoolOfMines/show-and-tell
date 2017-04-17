@@ -32,7 +32,10 @@ def from_config_yaml(key, force_reload=False):
         with open('config.yaml') as config:
             helpers.config_yaml = yaml.load(config)
 
-    return helpers.config_yaml[key]
+    if key in helpers.config_yaml:
+        return helpers.config_yaml[key]
+
+    return None
 
 
 def app_name():

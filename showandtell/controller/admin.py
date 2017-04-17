@@ -13,6 +13,7 @@ from showandtell.model import Project, Team, Session
 @kajiki_view('admin_panel')
 @security_check('admin')
 def admin_panel():
+    # TODO: Change this to pull the actual data
     t = Team('Mehtabyte')
     algobowl = Project(t, 'AlgoBowl',
                        'First place Spring 2017 AlgoBOWL project', 'shell_script')

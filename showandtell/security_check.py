@@ -6,7 +6,7 @@ Security Check
 
 import functools
 
-from bottle import request, abort
+from bottle import abort
 
 from showandtell.model import Session
 
@@ -15,7 +15,7 @@ def security_check(check_type, *dec_args, **dec_kwargs,):
     def decorator(secure_func):
         @functools.wraps(secure_func)
         def wrapper(*args, **kwargs):
-            identity = Session.get_identity(request)
+            identity = Session.get_identity()
             if check_type == 'admin':
                 if not identity or not identity.is_admin:
                     abort(403, 'You are not allowed to view the admin panel')

@@ -6,6 +6,7 @@ Session Model
 
 import datetime
 from datetime import timedelta
+from bottle import request
 
 from showandtell import model
 from showandtell.db import Base, session
@@ -33,7 +34,7 @@ class Session(Base):
         self.expires_on = datetime.datetime.now() + timedelta(days=30)
 
     @staticmethod
-    def get_identity(request):
+    def get_identity():
         user_session = session.query(Session)\
             .filter_by(session_cookie=request.get_cookie('session_token'))\
             .first()

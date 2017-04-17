@@ -9,18 +9,21 @@ from showandtell import db, kajiki_view, helpers, model, security_check
 import validators
 import os
 
+
 def can_edit(ident, team):
     admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
     return (ident and ident in team.members) or admin_edit
 
+
 def query_team(id, edit=False):
-    user = model.Session.get_identity(request)
+    user = model.Session.get_identity()
     team = db.session.query(model.Team).filter_by(team_id=id).first()
 
     if edit and not can_edit(user, team):
         abort(403, 'You do not have permission to edit this team')
 
     return (team, user)
+
 
 @route('/team/<id>')
 @kajiki_view('team')
@@ -41,7 +44,7 @@ def team_profile(id):
 @post('/team/new')
 @security_check('logged_in', action='create a team')
 def team_profile_new():
-    user = model.Session.get_identity(request)
+    user = model.Session.get_identity()
     name = request.forms.get('name')
 
     if not validators.length(name, min=1):
@@ -55,6 +58,7 @@ def team_profile_new():
     db.session.commit()
 
     redirect('/team/%s?just_created=true' % team.team_id)
+
 
 @post('/team/<id>/edit')
 def do_edit_team(id):
@@ -70,6 +74,7 @@ def do_edit_team(id):
                 (pic, thumb) = helpers.util.upload_profile_pic(profile_pic)
             except IOError as err:
                 return "{}".format(err)
+
             asset = model.Asset(profile_pic.filename,
                                 "png", pic, thumbnail=thumb)
             team.profile_pic = asset
@@ -93,46 +98,62 @@ def do_edit_team(id):
 
     redirect('/team/%s' % id)
 
+
 def add_member(uid, team):
-    person = db.session.query(model.Person).filter_by(user_id=uid).first()
-    if person: 
-        if person not in team.members: team.members.append(person)
-        else: abort(400, 'Person #%s is already a member of team' % uid)
-    else: abort(400, 'Person #%s does not exist' % uid)
+    person = db.session.query(model.Person).filter_by(user_id=uid).one()
+    if person:
+        if person not in team.members:
+            team.members.append(person)
+        else:
+            abort(400, 'Person #%s is already a member of team' % uid)
+    else:
+        abort(400, 'Person #%s does not exist' % uid)
+
 
 def remove_member(uid, team):
-    person = db.session.query(model.Person).filter_by(user_id=uid).first()
-    if person: 
-        if person in team.members: team.members.remove(person)
-        else: abort(400, 'Person #%s is not a member of team' % uid)
-    else: abort(400, 'Person #%s does not exist' % uid)
+    person = db.session.query(model.Person).filter_by(user_id=uid).one()
+    if person:
+        if person in team.members:
+            team.members.remove(person)
+        else:
+            abort(400, 'Person #%s is not a member of team' % uid)
+    else:
+        abort(400, 'Person #%s does not exist' % uid)
+
 
 @post('/team/<id>/members')
 def mod_members(id):
     (team, user) = query_team(id, edit=True)
 
+    add = []
+    remove = []
+
     if not request.query.type or request.query.type == 'json':
-        add = request.json.get('add') or []
-        for p in add:
-            add_member(p.get('user_id'), team)
+        add = [p.get('user_id') for p in request.json.get('add') or []]
+        remove = [p.get('user_id') for p in request.json.get('remove') or []]
 
-        remove = request.json.get('remove') or []
-        for p in remove:
-            remove_member(p.get('user_id'), team)
-            
     elif request.query.type == 'form':
-        add = request.forms.get('add')
-        if add: add_member(add, team)
+        form_add = request.forms.get('add')
+        form_remove = request.forms.get('remove')
+        if form_add:
+            add.append(request.forms.get('add'))
 
-        remove = request.forms.get('remove')
-        if remove: remove_member(remove, team)
-
-        redirect('/team/%s' % id)
+        elif form_remove:
+            remove.append(request.forms.get('remove'))
 
     else:
         abort(400, 'Member modification not form or json')
 
+    for p in add:
+        add_member(p, team)
+
+    for p in remove:
+        remove_member(p, team)
+
+    db.session.add(team)
     db.session.commit()
+
+    redirect('/team/%s' % id)
 
 
 @get('/team/<id>/members')
@@ -142,6 +163,7 @@ def get_members(id):
 
 
 def get_pic(id, thumb=False):
+    """ Returns the actual profile picture """
     profile_pic = db.session.query(model.Asset)\
         .join(model.Team)\
         .filter_by(team_id=id).first()
