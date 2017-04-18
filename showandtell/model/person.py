@@ -24,6 +24,7 @@ class Person(Base):
             'user_id': self.user_id,
             'multipass_username': self.multipass_username,
             'name': self.name,
+            'bio': self.bio,
         }
 
     __tablename__ = 'people'

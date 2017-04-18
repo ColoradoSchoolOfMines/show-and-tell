@@ -29,11 +29,15 @@
                         <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <form class="navbar-form navbar-left" action="/search" role="search">
+                        <form class="navbar-form navbar-left search-form" method="get" action="/search" role="search">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter search term..." />
+                                <input name="q"
+                                       value="${query if self.defined('query') else ''}"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter search term..." />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-xs btn-default" type="button">Search</button>
+                                    <button class="btn btn-xs btn-default" type="submit">Search</button>
                                 </span>
                             </div>
                         </form>

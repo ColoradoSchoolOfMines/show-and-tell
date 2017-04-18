@@ -34,6 +34,14 @@ class Project(Base):
     def get_by_id(project_id):
         return session.query(Project).filter_by(project_id=project_id).one()
 
+    def info_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'website': self.website,
+            'repository': self.repository,
+        }
+
     __tablename__ = 'projects'
 
     # Fields
@@ -43,6 +51,7 @@ class Project(Base):
     description = Column(String, nullable=False)
     name = Column(String, unique=True, nullable=False)
     website = Column(String)
+    repository = Column(String)
     status = Column(String, nullable=False, default="unverified")
     reject_reason = Column(String)
 

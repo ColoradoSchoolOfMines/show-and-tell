@@ -18,6 +18,7 @@ class Team(Base):
         self.website = website
 
     def info_dict(self):
+        print(self)
         return {
             'team_id': self.team_id,
             'name': self.name,

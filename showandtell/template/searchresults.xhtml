@@ -1,0 +1,96 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">${util.app_name()} - Search: ${query}</title>
+    </head>
+    <body py:block="body" py:strip="True">
+        <div class="row">
+            <h1>${'%s ' % search_type if self.defined('search_type') else ''}Results for "${query}"</h1>
+        </div>
+
+        <div class="row" py:if="self.defined('projects') and len(projects) &gt; 0">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Projects</div>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Website</th>
+                        </tr>
+                        <tr py:for="p in projects[:10]">
+                            <td>
+                                ${p['name']}
+                            </td>
+                            <td>${p['description']}</td>
+                            <td>${p['website']}</td>
+                        </tr>
+                        <tr py:if="len(projects) &gt; 10">
+                            <td><a href="/search/projects/${query}">View all results</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" py:if="self.defined('people') and len(people) &gt; 0">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">People</div>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Bio</th>
+                        </tr>
+                        <tr py:for="p in people[:10]">
+                            <td>
+                                <a href="/user/${p['multipass_username']}">
+                                    <img class="profile-pic-small"
+                                         src="/user/${p['multipass_username']}/profile_thumb.png"
+                                         width="32"
+                                         height="32" />
+                                    ${p['name']}
+                                </a>
+                            </td>
+                            <td>${p['bio']}</td>
+                        </tr>
+                        <tr py:if="len(people) &gt; 10">
+                            <td><a href="/search/people/${query}">View all results</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" py:if="self.defined('teams') and len(teams) &gt; 0">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Teams</div>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Website</th>
+                        </tr>
+                        <tr py:for="t in teams[:10]">
+                            <td>
+                                <a href="/team/${t['team_id']}">
+                                    <img class="profile-pic-small"
+                                         src="/team/${t['team_id']}/profile_thumb.png"
+                                         width="32"
+                                         height="32" />
+                                    ${t['name']}
+                                </a>
+                            </td>
+                            <td>${t['website']}</td>
+                        </tr>
+                        <tr py:if="len(teams) &gt; 10">
+                            <td><a href="/search/teams/${query}">View all results</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
