@@ -14,8 +14,8 @@ from showandtell.model import Person, Team, Project
 def search():
     query = request.GET.get('q')
     search_type = request.GET.get('type')
-    if search_type not in ('all', 'people', 'teams', 'projects'):
-        abort('Search type must either "all", "people", "teams" or "projects"')
+    if search_type not in ('people', 'teams', 'projects'):
+        search_type = 'all'
 
     results = {
         'page': 'searchresults',
@@ -42,7 +42,7 @@ def search_users(entity):
     query = request.GET.get('q')
 
     if entity not in ('users', 'teams', 'projects'):
-        abort('Cannot search for %s' % entity)
+        abort(400, 'Cannot search for %s' % entity)
     elif entity == 'users':
         return {'people': find_users(query)}
     elif entity == 'teams':
