@@ -9,7 +9,7 @@ from showandtell.db import Base
 from showandtell.model.association_tables import person_team_xref
 
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 
 
 class Person(Base):

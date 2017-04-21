@@ -27,8 +27,7 @@ def security_check(check_type, *dec_args, **dec_kwargs,):
                 if not identity or identity.multipass_username != kwargs['username']:
                     abort(403, 'You are not allowed to edit users other than yourself')
             else:
-                raise Exception(
-                    'Invalid check_type "%s" specified on the security_check decorator' % check_type)
+                raise ValueError('Invalid check_type "%s" specified on the security_check decorator' % check_type)
 
             return secure_func(*args, **kwargs)
 

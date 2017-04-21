@@ -11,11 +11,12 @@ from sqlalchemy.orm import relationship
 
 class Project(Base):
 
-    def __init__(self, team, name, description, type, website=None, status='unverified'):
+    def __init__(self, team, name, description, proj_type, website=None,
+                 status='unverified'):
         self.team = team
         self.name = name
         self.description = description
-        self.type = type
+        self.type = proj_type
         self.website = website
         self.status = status
 

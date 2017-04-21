@@ -50,12 +50,21 @@ def extra_template_context(identity):
     return context
 
 
-def glyphicon(icon_name, **kwargs):
-    return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
+def glyphicon(icon_name, *args, **kwargs):
+    return Markup('<i class="glyphicon glyphicon-%s %s" %s></i>' % (
+        icon_name,
+        ' '.join(args),
+        ' '.join('%s="%s"' % (k, v) for k, v in kwargs.items())
+    ))
 
 
-def faicon(icon_name, **kwargs):
-    return Markup('<span class="fa fa-%s"></span>' % icon_name)
+def faicon(icon_name, *args, **kwargs):
+    return Markup('<i class="fa fa-%s %s" %s></i>' % (
+        icon_name,
+        ' '.join(args),
+        ' '.join('%s="%s"' % (k, v) for k, v in kwargs.items())
+    ))
+
 
 def make_path():
     base_path = from_config_yaml('asset_save_location')
@@ -69,6 +78,7 @@ def save_asset(uploaded_file):
     return filename
 
 from PIL import Image
+
 
 def upload_profile_pic(uploaded_file):
     if uploaded_file.content_length > 20000000:

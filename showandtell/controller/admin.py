@@ -16,7 +16,8 @@ def admin_panel():
     # TODO: Change this to pull the actual data
     t = Team('Mehtabyte')
     algobowl = Project(t, 'AlgoBowl',
-                       'First place Spring 2017 AlgoBOWL project', 'shell_script')
+                       'First place Spring 2017 AlgoBOWL project',
+                       'shell_script')
     algobowl.status = 'verified'
     algobowl.project_id = 10
 
@@ -30,6 +31,7 @@ def admin_panel():
 
     projects = [algobowl, dp, sat]
 
+    # Sort the projects putting unverified before rejected before verified
     sort_order = ['unverified', 'rejected', 'verified']
     projects = sorted(projects, key=lambda p: sort_order.index(p.status))
 

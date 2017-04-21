@@ -1,0 +1,13 @@
+{
+    "libs": [],
+    "loadEagerly": [
+        "/home/sumner/.vim/tern-complete/**/*.js",
+        "resources/js/script.js"
+    ],
+    "plugins": {
+        "requirejs": {
+            "baseURL": "./",
+            "paths": {}
+        }
+    }
+}

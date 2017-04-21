@@ -5,15 +5,15 @@ Asset Model
 """
 
 from showandtell.db import Base
-from sqlalchemy import Column, Integer, String, Binary
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 
 class Asset(Base):
 
-    def __init__(self, name, type, filename, thumbnail = None):
+    def __init__(self, name, asset_type, filename, thumbnail=None):
         self.name = name
-        self.type = type
+        self.type = asset_type
         self.filename = filename
         self.thumbnail = thumbnail
 

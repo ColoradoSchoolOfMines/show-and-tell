@@ -8,7 +8,7 @@ from showandtell.db import Base
 from showandtell.model.association_tables import person_team_xref
 
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 
 
 class Team(Base):
@@ -18,7 +18,6 @@ class Team(Base):
         self.website = website
 
     def info_dict(self):
-        print(self)
         return {
             'team_id': self.team_id,
             'name': self.name,

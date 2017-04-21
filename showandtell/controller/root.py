@@ -14,10 +14,11 @@ import showandtell.model
 def index():
     return {'page': 'index'}
 
-# Route all of the resources
-# http://stackoverflow.com/a/13258941/2319844
-
 
 @route('/resources/<filepath:path>')
 def static(filepath):
+    """
+    Routes all of the resources
+    http://stackoverflow.com/a/13258941/2319844
+    """
     return static_file(filepath, root='resources')

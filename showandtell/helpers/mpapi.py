@@ -29,9 +29,9 @@ def auth(username, password):
 
 
 def user_info(username):
-    user_info_request = requests.get(_api_url('uid/%s' % username))
+    request = requests.get(_api_url('uid/%s' % username))
 
-    if not user_info_request.ok or user_info_request.json()['result'] != 'success':
+    if not request.ok or request.json()['result'] != 'success':
         return None
 
-    return user_info_request.json()['attributes']
+    return request.json()['attributes']

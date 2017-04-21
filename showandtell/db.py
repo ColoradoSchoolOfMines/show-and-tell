@@ -4,11 +4,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from showandtell import helpers
+from showandtell.helpers import util
 
 __all__ = ['engine', 'Session', 'Base', 'session']
 
-engine = create_engine(helpers.util.from_config_yaml('db'))
+engine = create_engine(util.from_config_yaml('db'))
 
 Session = sessionmaker(bind=engine)
 session = Session()
