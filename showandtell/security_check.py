@@ -11,7 +11,7 @@ from bottle import abort
 from showandtell.model import Session
 
 
-def security_check(check_type, *dec_args, **dec_kwargs,):
+def security_check(check_type, *dec_args, **dec_kwargs):
     def decorator(secure_func):
         @functools.wraps(secure_func)
         def wrapper(*args, **kwargs):

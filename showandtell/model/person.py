@@ -17,7 +17,7 @@ class Person(Base):
     def __init__(self, username):
         self.multipass_username = username
         user_info = helpers.mpapi.user_info(username)
-        self.name = '%s %s' % (user_info['first'], user_info['last'])
+        self.name = '%s %s' % (user_info['first'], user_info['sn'])
 
     def info_dict(self):
         return {
