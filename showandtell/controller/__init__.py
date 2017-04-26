@@ -8,3 +8,4 @@ import showandtell.controller.root
 import showandtell.controller.search
 import showandtell.controller.team
 import showandtell.controller.user
+import showandtell.controller.project

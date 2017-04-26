@@ -1,0 +1,52 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <!-- This changes the tab label -->
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">${util.app_name()} - New Project</title>
+    </head>
+
+    <!-- A header gets added by black magic -->
+
+    <!-- This is the actual page -->
+    <body py:block="body" py:strip="True">
+
+        <!-- This contains the user profile information -->         
+        <form id="project-create"
+                      method="post"
+                      enctype="multipart/form-data"
+                      action="/submit/new">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Name:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="name" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Profile Picture:</label>
+                        <div class="col-md-8">
+                            <input type="file" name="profile_pic"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Website:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="website"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8 col-md-offset-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <!-- 
+                            <a class="btn btn-default"
+                               data-toggle="collapse"
+                               aria-expanded="false"
+                               data-target="#profile-display"
+                               data-collapse="#profile-edit">
+                                Cancel</a>
+                            -->
+                        </div>
+                    </div>
+                </form>
+    </body>
+
+    <!-- A footer is added by black magic -->
+</html>
