@@ -1,7 +1,7 @@
 <html py:extends="master.xhtml" py:strip="True">
     <!-- This changes the tab label -->
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${util.app_name()} - New Project</title>
+        <title py:block="master_title">${util.app_name()} - Submit a Project</title>
     </head>
 
     <!-- A header gets added by black magic -->
@@ -15,6 +15,7 @@
                       enctype="multipart/form-data"
                       action="/submit/new">
                     <div class="form-group">
+                        <!-- This needs to be converted to the cooler dynamic one or something -->
                         <label class="col-md-3 control-label">Team:</label>
                         <div class="col-md-8">
                             <select class="form-control" required="required" name="team-id">
@@ -55,6 +56,12 @@
                         <label class="col-md-3 control-label">Website:</label>
                         <div class="col-md-8">
                             <input class="form-control" type="text" name="website"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Repository:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="repository"/>
                         </div>
                     </div>
                     <div class="form-group">

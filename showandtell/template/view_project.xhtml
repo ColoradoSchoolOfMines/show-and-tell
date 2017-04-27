@@ -1,34 +1,36 @@
 <html py:extends="master.xhtml" py:strip="True">
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${util.app_name()} - ${profile.name}</title>
+        <title py:block="master_title">${util.app_name()} - ${project.name}</title>
     </head>
 
     <body py:block="body" py:strip="True">
         <div class="row profile">
+            <!--
             <div class="col-md-3">
                 <img class="profile-pic" src="/user/${profile.multipass_username}/profile_pic.png" alt="profile picture" width="150" height="150" />
             </div>
-
+            -->
             <div id="profile-display-edit" class="col-md-9">
                 <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
-                    <h1>${profile.name}</h1>
-                    <p>${profile.bio}</p>
-                    <p py:if="profile.github_username or profile.website">
-                    <a href="https://github.com/${profile.github_username}"
-                       py:if="profile.github_username"
+                    <h1>${project.name}</h1>
+                    <p>${project.description}</p>
+                    <p py:if="project.repository or project.website">
+                    <a href="${project.repository}"
+                       py:if="project.repository"
                        target="_blank">
-                        ${util.faicon('github')} ${profile.github_username}
+                        ${util.faicon('github')} ${project.repository}
                     </a>
 
                     <span class="dot-sep"
-                          py:if="profile.github_username and profile.website">&#8226;</span>
+                          py:if="project.repository and project.website">&#8226;</span>
 
-                    <a href="${profile.website}"
-                       py:if="profile.website"
+                    <a href="${project.website}"
+                       py:if="project.website"
                        target="_blank">
-                        ${util.glyphicon('globe')} ${profile.website}
+                        ${util.glyphicon('globe')} ${project.website}
                     </a>
                     </p>
+                    <!--
                     <p py:if="can_edit">
                     <button type="button"
                             class="btn btn-default"
@@ -37,8 +39,9 @@
                             data-target="#profile-edit"
                             data-collapse="#profile-display">Edit</button>
                     </p>
+                    -->
                 </div>
-
+                <!--
                 <form id="profile-edit"
                       class="collapse profile-edit form-horizontal"
                       method="post"
@@ -89,9 +92,10 @@
                     </div>
 
                 </form>
+                -->
             </div>
         </div>
-
+        <!--
         <div class="row" py:if="len(teams) &gt; 0">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -117,7 +121,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="panel panel-default">
             <div class="panel-heading">Projects</div>
             <table class="table table-hover">
@@ -127,11 +131,7 @@
                 </tr>
 
                 <tr py:for="p in projects">
-                    <td>
-                        <a href="/projects/${p.project_id}">
-                            ${p.name}
-                        </a>
-                    </td>
+                    <td>${p.name}</td>
                     <td>
                         <img class="profile-pic-small" src="/team/${t.team_id}/profile_thumb.png" width="30" height="30" />
                         <a href="/team/${t.team_id}">${t.name}</a>
@@ -139,5 +139,6 @@
                 </tr>
             </table>
         </div>
+        -->
     </body>
 </html>

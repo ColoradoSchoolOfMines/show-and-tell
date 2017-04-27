@@ -37,6 +37,7 @@ class Project(Base):
 
     def info_dict(self):
         return {
+            'project_id': self.project_id,
             'name': self.name,
             'description': self.description,
             'website': self.website,

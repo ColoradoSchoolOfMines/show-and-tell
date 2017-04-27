@@ -19,7 +19,9 @@
                         </tr>
                         <tr py:for="p in projects[:10]">
                             <td>
-                                ${p['name']}
+                                <a href="/projects/${p['project_id']}">
+                                    ${p['name']}
+                                </a>
                             </td>
                             <td>${p['description']}</td>
                             <td>${p['website']}</td>
