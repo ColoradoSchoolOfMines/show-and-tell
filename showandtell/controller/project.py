@@ -21,7 +21,13 @@ def new_project():
 
     print("The cake is a lie!")
     return {
-        'page': 'submit_project'
+        # Yes, this is a hack to get the text area to work properly
+        'empty': '',
+        'teams': user.teams,
+        # This is a placeholder for the moment, 
+        # I dunno what we're actually doing
+        'types': ['Image', 'Video', 'Shell Script'],
+        'page': 'submit_project',
     }
 
 # Get the contents submitted from submit a project
@@ -30,10 +36,11 @@ def submit_project():
     user = model.Session.get_identity()
 
     name = request.forms.get('name')
-
+    description = request.forms.get('description')
     website = request.forms.get('website')
 
-    print('name')
-    print('webiste')
+    print(name)
+    print(description)
+    print(website)
 
 

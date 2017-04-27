@@ -49,7 +49,7 @@ class Project(Base):
     project_id = Column(Integer, autoincrement=True, primary_key=True)
     team_id = Column(Integer, ForeignKey('teams.team_id'), nullable=False)
     type = Column(String, nullable=False)
-    description = Column(String, nullable=False)
+    description = Column(String)
     name = Column(String, unique=True, nullable=False)
     website = Column(String)
     repository = Column(String)
