@@ -17,7 +17,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Team:</label>
                         <div class="col-md-8">
-                            <select class="form-control" required="required">
+                            <select class="form-control" required="required" name="team-id">
                                 <option py:for="t in teams" value="${t.team_id}">${t.name}</option>
                             </select>
                         </div>
@@ -38,8 +38,8 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Type:</label>
                         <div class="col-md-8">
-                            <select class="form-control" required="required">
-                                <option py:for="t in types">${t}</option>
+                            <select class="form-control" required="required" name="project-type">
+                                <option py:for="t in types" value="${t}">${t}</option>
                             </select>
                         </div>
                     </div>

@@ -35,12 +35,36 @@ def new_project():
 def submit_project():
     user = model.Session.get_identity()
 
+    # All the raw data from the form
+    team_id = request.forms.get('team-id')
     name = request.forms.get('name')
     description = request.forms.get('description')
+    project_type = request.forms.get('project-type')
+    
+    # Take the team id and get the team object
+    team = db.session.query(model.Team).filter_by(team_id=team_id).one()
+
+    # If the user didn't enter a website, 
+    # set it to none so it's null
     website = request.forms.get('website')
+    if website == '':
+        website = None
+    
+    # Create a new row in the project table
+    project = model.Project(team, name, description, project_type, website)
 
-    print(name)
-    print(description)
-    print(website)
+    db.session.add(project)
+    db.session.commit()
 
+    ''' Hooray for debugging
+    print("Team",team)
+    print("name",name)
+    print("description",description)
+    print("project_type",project_type)
+    print("website",website)
+    '''
 
+@route('/projects/<id>')
+@kajiki_view('view_project')
+def view_project(id):
+    print("Hello world!")

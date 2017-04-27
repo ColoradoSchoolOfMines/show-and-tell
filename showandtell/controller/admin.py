@@ -4,7 +4,7 @@
 Admin Page
 """
 
-from bottle import route, post, static_file, request, abort
+from bottle import route, post, static_file, request, abort, redirect
 from showandtell import helpers, kajiki_view, db, security_check
 from showandtell.model import Project, Team, Session
 
@@ -13,6 +13,7 @@ from showandtell.model import Project, Team, Session
 @kajiki_view('admin_panel')
 @security_check('admin')
 def admin_panel():
+    '''
     # TODO: Change this to pull the actual data
     t = Team('Mehtabyte')
     algobowl = Project(t, 'AlgoBowl',
@@ -28,8 +29,9 @@ def admin_panel():
                   website='https://showandtell.mines.edu')
     sat.status = 'rejected'
     sat.project_id = 8
-
     projects = [algobowl, dp, sat]
+    '''  
+    projects = db.session.query(Project).all()
 
     # Sort the projects putting unverified before rejected before verified
     sort_order = ['unverified', 'rejected', 'verified']

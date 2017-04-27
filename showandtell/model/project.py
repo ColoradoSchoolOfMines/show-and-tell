@@ -22,13 +22,13 @@ class Project(Base):
 
     def verify(self):
         self.status = 'verified'
-        session.add(self)
+        #session.add(self)
         session.commit()
 
     def reject(self, reason):
         self.status = 'rejected'
         self.reject_reason = reason
-        session.add(self)
+        #session.add(self)
         session.commit()
 
     @staticmethod
@@ -59,7 +59,7 @@ class Project(Base):
     # Constraints
     __table_args__ = (
         # Prevent rouge statuses
-        CheckConstraint("status in ('unverified', 'rejected', 'accepted')"),
+        CheckConstraint("status in ('unverified', 'rejected', 'verified')"),
 
         # Require reject reason if project is rejected
         CheckConstraint("reject_reason is not null or status != 'rejected'"),
