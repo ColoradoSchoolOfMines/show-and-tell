@@ -15,13 +15,23 @@
                       method="post"
                       enctype="multipart/form-data"
                       action="/submit/new">
+                    <input name="project_id" type="hidden" value="${project.project_id}"/>
                     <div class="form-group">
-                        <input name="project_id" type="hidden" value="${project.project_id}"/>
                         <!-- This needs to be converted to the cooler dynamic one or something -->
                         <label class="col-md-3 control-label">Team:</label>
                         <div class="col-md-8">
+                            <!-- This is the proper way to do this, bascially it's just a dynamic version
+                            <select class="selectize team" required="required" name="team-id" placeholder="Select a team...">
+                            </select>
+                            -->
                             <select class="form-control" required="required" name="team-id">
-                                <option py:for="t in teams" value="${t.team_id}">${t.name}</option>
+                                <div py:for="t in teams">
+                                    <!-- This is a dumb way of doing this, but it selects the current team automatically -->
+                                    <option py:if="project.team_id == t.team_id" value="${t.team_id}" selected="selected">
+                                    ${t.name}</option>
+                                    <option py:if="project.team_id != t.team_id" value="${t.team_id}">
+                                    ${t.name}</option>
+                                </div>
                             </select>
                         </div>
                     </div>
@@ -54,16 +64,22 @@
                         <label class="col-md-3 control-label">Type:</label>
                         <div class="col-md-8">
                             <select class="form-control" required="required" name="project-type">
-                                <option py:for="t in types" value="${t}">${t}</option>
+                                <div py:for="t in types">
+                                    <option py:if="t == project.type" value="${t}" selected="selected">${t}</option>
+                                    <option py:if="t != project.type" value="${t}">${t}</option>
+                                </div>
+                                
                             </select>
                         </div>
                     </div>
+                    <!-- Things below here are going to be dynamically shown based off of the submission type -->
                     <div class="form-group">
                         <label class="col-md-3 control-label">Project Picture:</label>
                         <div class="col-md-8">
-                            <input type="file" name="project_pic"/>
+                            <input class="btn" type="file" name="project_pic"/>
                         </div>
                     </div>
+                    <!-- End dynamic portion -->
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
