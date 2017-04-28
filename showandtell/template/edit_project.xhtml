@@ -8,13 +8,15 @@
 
     <!-- This is the actual page -->
     <body py:block="body" py:strip="True">
-
+        <h1 py:if="project.project_id">Edit ${project.name}</h1>
+        <h1 py:if="not project.project_id">Create a Project</h1>
         <!-- This contains the user profile information -->         
         <form id="project-create"
                       method="post"
                       enctype="multipart/form-data"
                       action="/submit/new">
                     <div class="form-group">
+                        <input name="project_id" type="hidden" value="${project.project_id}"/>
                         <!-- This needs to be converted to the cooler dynamic one or something -->
                         <label class="col-md-3 control-label">Team:</label>
                         <div class="col-md-8">
@@ -26,14 +28,26 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Name:</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" name="name" required="required"/>
+                            <input class="form-control" type="text" name="name" required="required" value="${project.name}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Description:</label>
                         <div class="col-md-8">
                             <!-- The blank space was just a hack because not putting in anything was causing the text area to have everything below it in this document as the default value -->
-                            <textarea class="form-control" rows="5" name="description" form="project-create" required="required" placeholder="Enter your project description here...">${empty}</textarea>
+                            <textarea class="form-control" rows="5" name="description" form="project-create" required="required" placeholder="Enter your project description here...">${project.description}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Website:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="website" value="${project.website}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Repository:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" name="repository" value="${project.repository}"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -44,24 +58,10 @@
                             </select>
                         </div>
                     </div>
-                    <!--
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Profile Picture:</label>
+                        <label class="col-md-3 control-label">Project Picture:</label>
                         <div class="col-md-8">
-                            <input type="file" name="profile_pic"/>
-                        </div>
-                    </div>
-                    -->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Website:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="website"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Repository:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="repository"/>
+                            <input type="file" name="project_pic"/>
                         </div>
                     </div>
                     <div class="form-group">

@@ -30,11 +30,14 @@
                         ${util.glyphicon('globe')} ${project.website}
                     </a>
                     </p>
+                    <p py:if="can_edit">
+                        <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
+                    </p>
                     <!--
                     <p py:if="can_edit">
                     <button type="button"
                             class="btn btn-default"
-                            aria-expabnded="true"
+                            aria-expanded="true"
                             data-toggle="collapse"
                             data-target="#profile-edit"
                             data-collapse="#profile-display">Edit</button>

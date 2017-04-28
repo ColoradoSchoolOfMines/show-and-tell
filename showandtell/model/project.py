@@ -22,13 +22,13 @@ class Project(Base):
 
     def verify(self):
         self.status = 'verified'
-        #session.add(self)
+        session.add(self)
         session.commit()
 
     def reject(self, reason):
         self.status = 'rejected'
         self.reject_reason = reason
-        #session.add(self)
+        session.add(self)
         session.commit()
 
     @staticmethod
