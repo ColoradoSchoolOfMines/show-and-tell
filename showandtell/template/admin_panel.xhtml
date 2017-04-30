@@ -35,7 +35,10 @@
                             <td>${p.description}</td>
                             <td>${p.type}</td>
                             <td><a href="${p.website}" target="_blank">${p.website}</a></td>
-                            <td><a href="">Dowload Assets</a></td>
+                            <td>
+                                <a py:if="p.assets" href="/projects/${p.project_id}/download">Dowload Assets</a>
+                                <div py:if="not p.assets">No Assets Found</div>
+                            </td>
                             <td class="reject-verify">
                                 <button class="${'disabled' if p.status == 'rejected' else ''} btn btn-sm btn-danger project-submit"
                                         data-toggle="modal"

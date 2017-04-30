@@ -1,0 +1,84 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">${util.app_name()} - ${project.name}</title>
+    </head>
+
+    <body py:block="body" py:strip="True">
+        <div class="row profile">
+            <!--
+            <div class="col-md-3">
+                <img class="profile-pic" src="/user/${profile.multipass_username}/profile_pic.png" alt="profile picture" width="150" height="150" />
+            </div>
+            -->
+            <div id="profile-display-edit" class="col-md-9">
+                <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
+                    <h1>${project.name}</h1>
+                    <!-- This looks super derpy right now -->
+                    <a href="/team/${project.team_id}">
+                        <img class="profile-pic-small" src="/team/${project.team_id}/profile_thumb.png" width="32" height="32" />
+                        ${project.team.name}
+                    </a>
+                    <p>${project.description}</p>
+                    <p py:if="project.repository or project.website">
+                    <a href="${project.repository}"
+                       py:if="project.repository"
+                       target="_blank">
+                        ${util.faicon('github')} ${project.repository}
+                    </a>
+
+                    <span class="dot-sep"
+                          py:if="project.repository and project.website">&#8226;</span>
+
+                    <a href="${project.website}"
+                       py:if="project.website"
+                       target="_blank">
+                        ${util.glyphicon('globe')} ${project.website}
+                    </a>
+                    </p>
+                    <p py:if="can_edit">
+                        <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
+                    </p>
+                    <!--
+                    <p py:if="can_edit">
+                    <button type="button"
+                            class="btn btn-default"
+                            aria-expanded="true"
+                            data-toggle="collapse"
+                            data-target="#profile-edit"
+                            data-collapse="#profile-display">Edit</button>
+                    </p>
+                    -->
+                </div>
+            </div>
+        </div>
+
+        <div id="project-display-assets" class="panel panel-default">
+            <div class="panel-heading">Assets</div>
+            <table class="table table-hover">
+                <tr>
+                    <th>Asset Name</th>
+                    <th>Asset Role</th>
+                </tr>
+
+                <div py:if="project.assets">
+                    <tr py:for="asset in project.assets">
+                        <td>
+                            ${asset.assets.name}
+                        </td>
+                        <td>
+                            ${asset.role}
+                        </td>
+                    </tr>
+                </div>
+                <div py:if="not project.assets">
+                    <tr>
+                        <td>
+                            This project currently has no assets.
+                        </td>
+                        <td><!--This has to be here for the dividng bar to go all the way across--></td>
+                    </tr>
+                </div>
+            </table>
+        </div>
+    </body>
+</html>

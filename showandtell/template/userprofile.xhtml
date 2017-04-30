@@ -127,10 +127,14 @@
                 </tr>
 
                 <tr py:for="p in projects">
-                    <td>${p.name}</td>
                     <td>
-                        <img class="profile-pic-small" src="/team/${t.team_id}/profile_thumb.png" width="30" height="30" />
-                        <a href="/team/${t.team_id}">${t.name}</a>
+                        <a href="/projects/${p.project_id}">
+                            ${p.name}
+                        </a>
+                    </td>
+                    <td>
+                        <img class="profile-pic-small" src="/team/${p.team_id}/profile_thumb.png" width="30" height="30" />
+                        <a href="/team/${p.team_id}">${p.team.name}</a>
                     </td>
                 </tr>
             </table>

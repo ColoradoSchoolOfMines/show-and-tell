@@ -22,13 +22,13 @@ class Project(Base):
 
     def verify(self):
         self.status = 'verified'
-        #session.add(self)
+        session.add(self)
         session.commit()
 
     def reject(self, reason):
         self.status = 'rejected'
         self.reject_reason = reason
-        #session.add(self)
+        session.add(self)
         session.commit()
 
     @staticmethod
@@ -37,6 +37,7 @@ class Project(Base):
 
     def info_dict(self):
         return {
+            'project_id': self.project_id,
             'name': self.name,
             'description': self.description,
             'website': self.website,
@@ -66,5 +67,5 @@ class Project(Base):
     )
 
     # Relationships
-    assets = relationship('ProjectAsset', back_populates='project')
+    assets = relationship('ProjectAsset', cascade="all, delete-orphan", back_populates='project')
     team = relationship('Team', back_populates='projects')
