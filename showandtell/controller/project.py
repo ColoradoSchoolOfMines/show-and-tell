@@ -30,11 +30,6 @@ def new_project(id=None):
     else:
         project = db.session.query(model.Project).filter_by(project_id=id).one()
 
-    print( "Number of assets:", len(project.assets) )
-    if project.assets:
-        for asset in project.assets:
-            print( asset.assets.name )
-
     return {
         # Yes, this is a hack to get the text area to work properly
         'empty': '',
@@ -90,7 +85,6 @@ def submit_project():
     # Remove any selected files from the project
     num_assets = request.forms.get('num_assets')
     if num_assets:
-        print( num_assets )
         for i in range(int(num_assets)):
             cur_asset = request.forms.get('asset-' + str(i))
             
@@ -98,9 +92,9 @@ def submit_project():
             if cur_asset:
                 # Convert the string into the asset id
                 cur_asset = int(cur_asset.split()[-1])
-                print("Asset to delete", cur_asset)
-                
+
                 asset = db.session.query(model.association_tables.ProjectAsset).filter_by(asset_id=cur_asset).one()
+                helpers.util.delete_asset(asset.assets.filename)
                 project.assets.remove(asset)
             
     # Add any new files that were uploaded to the project
@@ -108,11 +102,6 @@ def submit_project():
         for i, file in enumerate(project_files):
             if file.filename and file.file:
                 file_path = helpers.util.save_asset(file)
-
-                # Debug
-                print( file.filename )
-                print( file.filename.split('.')[-1] )
-                print( file.file )
 
                 # Make the cross-reference between the new asset and the project
                 xref = model.association_tables.ProjectAsset()
@@ -136,12 +125,7 @@ def view_project(id):
 
     if not project:
         abort(404, 'Project not found!')
-
-    print( len(project.assets) )
-    if project.assets:
-        for asset in project.assets:
-            print( asset.assets.name )
-
+        
     return {
         'project': project,
         'can_edit': can_edit(user, project.team),

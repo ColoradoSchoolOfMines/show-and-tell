@@ -77,6 +77,11 @@ def save_asset(uploaded_file):
     uploaded_file.save(full_path)
     return filename
 
+def delete_asset(file_name):
+    base_path = from_config_yaml('asset_save_location')
+    file_path = os.path.join(base_path, file_name)
+    os.remove(file_path)
+
 from PIL import Image
 
 
