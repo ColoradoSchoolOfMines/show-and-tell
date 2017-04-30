@@ -72,10 +72,16 @@ def make_path():
     return (os.path.join(base_path, real_filename), real_filename)
 
 
+def get_asset_folder():
+    base_path = from_config_yaml('asset_save_location')
+    return base_path
+
+
 def save_asset(uploaded_file):
     (full_path, filename) = make_path()
     uploaded_file.save(full_path)
     return filename
+
 
 def delete_asset(file_name):
     base_path = from_config_yaml('asset_save_location')

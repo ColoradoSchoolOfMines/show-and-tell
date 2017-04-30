@@ -108,8 +108,6 @@ def submit_project():
                 xref.assets = model.Asset(file.filename, file.filename.split('.')[1], file_path)
                 xref.role = "This is currently defunct"
                 project.assets.append(xref)
-
-
                 
     db.session.add(project)
     db.session.commit()
@@ -125,23 +123,44 @@ def view_project(id):
 
     if not project:
         abort(404, 'Project not found!')
-        
+
     return {
         'project': project,
         'can_edit': can_edit(user, project.team),
     }
 
-''' Still in progress
-@route('/projects/<id>/download')
+from zipfile import ZipFile
+
+@get('/projects/<id>/download')
 def download_project(id):
 
     project = db.session.query(model.Project).filter_by(project_id=id).first()
+    root_path = helpers.util.get_asset_folder()
 
-    if len(project.assets) > 1:
-        # TODO: Zip files and download all the assets
-        print( "Oops!" )
+    if not project.assets:
+        return None
+    if len(project.assets) == 1:
+        asset = project.assets[0].assets
+        return static_file(asset.filename, root=root_path, download=asset.name)
+    # Yes, this is very ugly
+    # I'm very sorry
     else:
-        print("File name:", project.assets[0].assets.name)
-        print("File path:", project.assets[0].assets.filename)
-        return static_file( project.assets[0].assets.name, root=project.assets[0].assets.filename)
-'''
+        download_name = project.name + '.zip'
+        archive_name = 'project_assets.zip'
+        archive_path = os.path.join(root_path, archive_name)
+
+        # Get rid of the last archive that was created if it exists
+        if os.path.isfile(archive_path):
+            os.remove(archive_path)
+
+        archive = ZipFile(archive_path, mode='x')
+
+        # Stick all of the assets into the zip
+        for project_asset in project.assets:
+            asset = project_asset.assets
+            asset_path = os.path.join(root_path, asset.filename)
+            archive.write(asset_path, asset.name)
+
+        archive.close()
+
+        return static_file(archive_name, root=root_path, download=download_name)
