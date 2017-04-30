@@ -57,17 +57,27 @@
             <table class="table table-hover">
                 <tr>
                     <th>Asset Name</th>
-                    <th>Asset Type</th>
+                    <th>Asset Role</th>
                 </tr>
 
-                <tr py:for="asset in project.assets">
-                    <td>
-                        ${asset.assets.name}
-                    </td>
-                    <td>
-                        ${asset.assets.type}
-                    </td>
-                </tr>
+                <div py:if="project.assets">
+                    <tr py:for="asset in project.assets">
+                        <td>
+                            ${asset.assets.name}
+                        </td>
+                        <td>
+                            ${asset.role}
+                        </td>
+                    </tr>
+                </div>
+                <div py:if="not project.assets">
+                    <tr>
+                        <td>
+                            This project currently has no assets.
+                        </td>
+                        <td><!--This has to be here for the dividng bar to go all the way across--></td>
+                    </tr>
+                </div>
             </table>
         </div>
     </body>

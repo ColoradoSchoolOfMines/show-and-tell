@@ -67,5 +67,5 @@ class Project(Base):
     )
 
     # Relationships
-    assets = relationship('ProjectAsset', back_populates='project')
+    assets = relationship('ProjectAsset', cascade="all, delete-orphan", back_populates='project')
     team = relationship('Team', back_populates='projects')

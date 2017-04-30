@@ -34,4 +34,4 @@ class ProjectAsset(Base):
 
     # Relationships
     project = relationship('Project', back_populates='assets')
-    assets = relationship('Asset', back_populates='project')
+    assets = relationship('Asset', cascade="all", back_populates='project')

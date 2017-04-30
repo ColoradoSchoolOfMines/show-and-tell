@@ -30,6 +30,11 @@ def new_project(id=None):
     else:
         project = db.session.query(model.Project).filter_by(project_id=id).one()
 
+    print( "Number of assets:", len(project.assets) )
+    if project.assets:
+        for asset in project.assets:
+            print( asset.assets.name )
+
     return {
         # Yes, this is a hack to get the text area to work properly
         'empty': '',
@@ -94,10 +99,10 @@ def submit_project():
                 # Convert the string into the asset id
                 cur_asset = int(cur_asset.split()[-1])
                 print("Asset to delete", cur_asset)
-                ''' This part's being weird because of the ProjectAsset deletion component
+                
                 asset = db.session.query(model.association_tables.ProjectAsset).filter_by(asset_id=cur_asset).one()
                 project.assets.remove(asset)
-                '''
+            
     # Add any new files that were uploaded to the project
     if project_files:
         for i, file in enumerate(project_files):
@@ -131,6 +136,11 @@ def view_project(id):
 
     if not project:
         abort(404, 'Project not found!')
+
+    print( len(project.assets) )
+    if project.assets:
+        for asset in project.assets:
+            print( asset.assets.name )
 
     return {
         'project': project,
