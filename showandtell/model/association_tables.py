@@ -29,7 +29,7 @@ class ProjectAsset(Base):
     project_id = Column(Integer, ForeignKey('projects.project_id'),
                         primary_key=True)
     asset_id = Column(Integer, ForeignKey('assets.asset_id'),
-                      primary_key=False)
+                      primary_key=True)
     role = Column(String, nullable=False)
 
     # Relationships

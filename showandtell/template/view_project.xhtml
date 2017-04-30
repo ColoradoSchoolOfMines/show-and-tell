@@ -13,6 +13,11 @@
             <div id="profile-display-edit" class="col-md-9">
                 <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
                     <h1>${project.name}</h1>
+                    <!-- This looks super derpy right now -->
+                    <a href="/team/${project.team_id}">
+                        <img class="profile-pic-small" src="/team/${project.team_id}/profile_thumb.png" width="32" height="32" />
+                        ${project.team.name}
+                    </a>
                     <p>${project.description}</p>
                     <p py:if="project.repository or project.website">
                     <a href="${project.repository}"
@@ -45,6 +50,25 @@
                     -->
                 </div>
             </div>
+        </div>
+
+        <div id="project-display-assets" class="panel panel-default">
+            <div class="panel-heading">Assets</div>
+            <table class="table table-hover">
+                <tr>
+                    <th>Asset Name</th>
+                    <th>Asset Type</th>
+                </tr>
+
+                <tr py:for="asset in project.assets">
+                    <td>
+                        ${asset.assets.name}
+                    </td>
+                    <td>
+                        ${asset.assets.type}
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>

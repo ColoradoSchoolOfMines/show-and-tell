@@ -65,10 +65,9 @@ def submit_project():
     if repository == '':
         repository = None
 
-    project_pic = request.files.get('project_pic')
-    if project_pic:
-        print( project_pic )
+    project_files = request.files.getall('project-files')        
 
+    # Update all of the text entries for the project
     if not project_id:
         # Create a new row in the project table
         project = model.Project(team, name, description, project_type, website)
@@ -83,6 +82,41 @@ def submit_project():
    
     project.repository = repository
 
+    # Remove any selected files from the project
+    num_assets = request.forms.get('num_assets')
+    if num_assets:
+        print( num_assets )
+        for i in range(int(num_assets)):
+            cur_asset = request.forms.get('asset-' + str(i))
+            
+            # Get the assets the user selected and delete them
+            if cur_asset:
+                # Convert the string into the asset id
+                cur_asset = int(cur_asset.split()[-1])
+                print("Asset to delete", cur_asset)
+                ''' This part's being weird because of the ProjectAsset deletion component
+                asset = db.session.query(model.association_tables.ProjectAsset).filter_by(asset_id=cur_asset).one()
+                project.assets.remove(asset)
+                '''
+    # Add any new files that were uploaded to the project
+    if project_files:
+        for i, file in enumerate(project_files):
+            if file.filename and file.file:
+                file_path = helpers.util.save_asset(file)
+
+                # Debug
+                print( file.filename )
+                print( file.filename.split('.')[-1] )
+                print( file.file )
+
+                # Make the cross-reference between the new asset and the project
+                xref = model.association_tables.ProjectAsset()
+                xref.assets = model.Asset(file.filename, file.filename.split('.')[1], file_path)
+                xref.role = "This is currently defunct"
+                project.assets.append(xref)
+
+
+                
     db.session.add(project)
     db.session.commit()
     
@@ -102,3 +136,18 @@ def view_project(id):
         'project': project,
         'can_edit': can_edit(user, project.team),
     }
+
+''' Still in progress
+@route('/projects/<id>/download')
+def download_project(id):
+
+    project = db.session.query(model.Project).filter_by(project_id=id).first()
+
+    if len(project.assets) > 1:
+        # TODO: Zip files and download all the assets
+        print( "Oops!" )
+    else:
+        print("File name:", project.assets[0].assets.name)
+        print("File path:", project.assets[0].assets.filename)
+        return static_file( project.assets[0].assets.name, root=project.assets[0].assets.filename)
+'''

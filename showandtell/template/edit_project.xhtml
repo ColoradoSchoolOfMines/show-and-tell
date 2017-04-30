@@ -8,7 +8,7 @@
 
     <!-- This is the actual page -->
     <body py:block="body" py:strip="True">
-        <h1 py:if="project.project_id">Edit ${project.name}</h1>
+        <h1 py:if="project.project_id">Edit "${project.name}"</h1>
         <h1 py:if="not project.project_id">Create a Project</h1>
         <!-- This contains the user profile information -->         
         <form id="project-create"
@@ -74,10 +74,39 @@
                     </div>
                     <!-- Things below here are going to be dynamically shown based off of the submission type -->
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Project Picture:</label>
+                        <label class="col-md-3 control-label">Project Files:</label>
                         <div class="col-md-8">
-                            <input class="btn" type="file" name="project_pic"/>
+                            <input class="btn" type="file" name="project-files" multiple="multiple" />
                         </div>
+                    </div>
+                    <div py:if="project.assets" class="form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Current Files (check file to remove):</div>
+                            <table class="table table-hover">
+                                <!--
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Team Name</th>
+                                </tr>-->
+
+                                <!-- And now things are starting to get really ugly -->
+                                <tr py:for="i,asset in enumerate(project.assets)">
+                                    <td>
+                                        <input type="checkbox" name="asset-${i}" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- This makes it easy to get every asset that could've been modified -->
+                        <input type="hidden" name="num_assets" value="${len(project.assets)}"/>
+
+                        <!--
+                        <label class="col-md-3 control-label">Current Files (check file to remove):</label>
+                        <div class="col-md-8">
+                            <label py:for="asset in project.assets"><input type="checkbox" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}</label>
+                        </div>
+                        -->
                     </div>
                     <!-- End dynamic portion -->
                     <div class="form-group">
