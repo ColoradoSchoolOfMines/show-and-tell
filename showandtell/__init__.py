@@ -3,7 +3,7 @@
 
 # Import your model modules here.
 from showandtell.kajiki_view import kajiki_view
-from showandtell.security_check import security_check
+from showandtell.security import security_check
 import showandtell.model
 import showandtell.helpers
 import showandtell.template
