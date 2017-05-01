@@ -78,7 +78,6 @@
                             <option py:if="t == project.type" value="${t}" selected="selected">${t}</option>
                             <option py:if="t != project.type" value="${t}">${t}</option>
                         </div>
-
                     </select>
                 </div>
             </div>
@@ -92,7 +91,6 @@
             <div py:if="project.assets" class="form-group">
                 <label class="col-md-3 control-label">Current Files (check file to remove):</label>
                 <div class="col-md-8">
-
                     <table class="table table-hover">
                         <!-- And now things are starting to get really ugly -->
                         <tr py:for="i,asset in enumerate(project.assets)">
@@ -107,10 +105,15 @@
                 <!-- This makes it easy to get every asset that could've been modified -->
                 <input type="hidden" name="num_assets" value="${len(project.assets)}"/>
 
-                <!--
-                    <label class="col-md-3 control-label">Current Files (check file to remove):</label>
-                    <div class="col-md-8">
-                    <label py:for="asset in project.assets"><input type="checkbox" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8 col-md-offset-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            
+                            <a py:if="project.project_id" class="btn btn-default" href="/projects/${project.project_id}">Cancel</a>
+                            <a py:if="not project.project_id" class="btn btn-default" href="/">Cancel</a>
+                        </div>
+>>>>>>> 35d39475e1ca2c41cdd5b1ac863da30bb80b1dbe
                     </div>
                 -->
             </div>

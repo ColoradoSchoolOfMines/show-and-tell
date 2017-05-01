@@ -13,6 +13,9 @@ from bottle import route, get, post, request, redirect, static_file, abort
 from showandtell import db, kajiki_view, helpers, model, security_check
 
 def can_edit(ident, user):
+    if ident == None:
+        return False
+
     admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
     return (ident and ident == user) or admin_edit
 

@@ -11,6 +11,9 @@ import os
 
 
 def can_edit(ident, team):
+    if ident == None:
+        return False
+
     admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
     return (ident and ident in team.members) or admin_edit
 
