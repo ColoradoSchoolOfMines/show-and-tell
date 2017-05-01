@@ -31,10 +31,10 @@
                         ${util.glyphicon('globe')} ${project.website}
                     </a>
                     </p>
-                    <div py:if="can_edit" class="col-md-8 col-md-offset-3">
-                        <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
-                    </div>
                 </div>
+            </div>
+            <div py:if="can_edit" class="col-md-8">
+                <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
             </div>
         </div>
 
@@ -52,9 +52,9 @@
                             ${asset.assets.name}
                         </td>
                         <!--
-                        <td>
+                            <td>
                             ${asset.role}
-                        </td>
+                            </td>
                         -->
                     </tr>
                 </div>
