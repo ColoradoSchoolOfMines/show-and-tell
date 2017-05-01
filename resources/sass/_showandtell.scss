@@ -35,6 +35,10 @@ span.dot-sep {
     &.profile {
         margin-bottom: 30px;
 
+        .team-name {
+            margin-top: 20px;
+        }
+
         .profile-pic {
             @include box-shadow(0 0 6px rgba(0, 0, 0, 0.8));
             @include border-radius(75px);
@@ -59,7 +63,7 @@ span.dot-sep {
     vertical-align: middle;
 
     &.reject-verify {
-        width: 130px;
+        width: 140px;
     }
 
     &.project-status {

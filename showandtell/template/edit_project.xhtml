@@ -1,7 +1,7 @@
 <html py:extends="master.xhtml" py:strip="True">
     <!-- This changes the tab label -->
     <head py:block="head" py:strip="True">
-        <title py:block="master_title">${util.app_name()} - Submit a Project</title>
+        <title py:block="master_title">${util.app_name()} - ${'Edit' if project.project_id else 'Create'} a Project</title>
     </head>
 
     <!-- A header gets added by black magic -->
@@ -9,120 +9,126 @@
     <!-- This is the actual page -->
     <body py:block="body" py:strip="True">
         <h1 py:if="project.project_id">Edit "${project.name}"</h1>
-        <h1 py:if="not project.project_id">Create a Project</h1>
-        <!-- This contains the user profile information -->         
+        <h1 py:if="not project.project_id">Submit a Project</h1>
+        <!-- This contains the user profile information -->
         <form id="project-create"
-                      method="post"
-                      enctype="multipart/form-data"
-                      action="/submit/new">
-                    <input name="project_id" type="hidden" value="${project.project_id}"/>
-                    <div class="form-group">
-                        <!-- This needs to be converted to the cooler dynamic one or something -->
-                        <label class="col-md-3 control-label">Team:</label>
-                        <div class="col-md-8">
-                            <!-- This is the proper way to do this, bascially it's just a dynamic version
-                            <select class="selectize team" required="required" name="team-id" placeholder="Select a team...">
-                            </select>
-                            -->
-                            <select class="form-control" required="required" name="team-id">
-                                <div py:for="t in teams">
-                                    <!-- This is a dumb way of doing this, but it selects the current team automatically -->
-                                    <option py:if="project.team_id == t.team_id" value="${t.team_id}" selected="selected">
-                                    ${t.name}</option>
-                                    <option py:if="project.team_id != t.team_id" value="${t.team_id}">
-                                    ${t.name}</option>
-                                </div>
-                            </select>
+              method="post"
+              enctype="multipart/form-data"
+              action="/submit/new">
+            <input name="project_id" type="hidden" value="${project.project_id}"/>
+            <div class="form-group">
+                <!-- This needs to be converted to the cooler dynamic one or something -->
+                <label class="col-md-3 control-label">Team:</label>
+                <div class="col-md-8">
+                    <!-- This is the proper way to do this, bascially it's just a dynamic version
+                        <select class="selectize team" required="required" name="team-id" placeholder="Select a team...">
+                        </select>
+                    -->
+                    <select class="form-control" required="required" name="team-id">
+                        <div py:for="t in teams">
+                            <!-- This is a dumb way of doing this, but it selects the current team automatically -->
+                            <option py:if="project.team_id == t.team_id" value="${t.team_id}" selected="selected">
+                            ${t.name}</option>
+                            <option py:if="project.team_id != t.team_id" value="${t.team_id}">
+                            ${t.name}</option>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Name:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="name" required="required" value="${project.name}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Description:</label>
-                        <div class="col-md-8">
-                            <!-- The blank space was just a hack because not putting in anything was causing the text area to have everything below it in this document as the default value -->
-                            <textarea class="form-control" rows="5" name="description" form="project-create" required="required" placeholder="Enter your project description here...">${project.description}</textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Website:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="website" value="${project.website}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Repository:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" name="repository" value="${project.repository}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Type:</label>
-                        <div class="col-md-8">
-                            <select class="form-control" required="required" name="project-type">
-                                <div py:for="t in types">
-                                    <option py:if="t == project.type" value="${t}" selected="selected">${t}</option>
-                                    <option py:if="t != project.type" value="${t}">${t}</option>
-                                </div>
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Things below here are going to be dynamically shown based off of the submission type -->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Project Files:</label>
-                        <div class="col-md-8">
-                            <input class="btn" type="file" name="project-files" multiple="multiple" />
-                        </div>
-                    </div>
-                    <div py:if="project.assets" class="form-group">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Current Files (check file to remove):</div>
-                            <table class="table table-hover">
-                                <!--
-                                <tr>
-                                    <th>Project Name</th>
-                                    <th>Team Name</th>
-                                </tr>-->
-
-                                <!-- And now things are starting to get really ugly -->
-                                <tr py:for="i,asset in enumerate(project.assets)">
-                                    <td>
-                                        <input type="checkbox" name="asset-${i}" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}
-                                    </td>
-                                </tr>
-                            </table>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Name:</label>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="name" required="required" value="${project.name}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Description:</label>
+                <div class="col-md-8">
+                    <!-- The blank space was just a hack because not putting in
+                        anything was causing the text area to have everything
+                        below it in this document as the default value
+                    -->
+                    <textarea class="form-control"
+                              rows="5"
+                              name="description"
+                              form="project-create"
+                              required="required"
+                              placeholder="Enter your project description here...">
+                        ${project.description}
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Website:</label>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="website" value="${project.website}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Repository:</label>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="repository" value="${project.repository}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Type:</label>
+                <div class="col-md-8">
+                    <select class="form-control" required="required" name="project-type">
+                        <div py:for="t in types">
+                            <option py:if="t == project.type" value="${t}" selected="selected">${t}</option>
+                            <option py:if="t != project.type" value="${t}">${t}</option>
                         </div>
 
-                        <!-- This makes it easy to get every asset that could've been modified -->
-                        <input type="hidden" name="num_assets" value="${len(project.assets)}"/>
+                    </select>
+                </div>
+            </div>
+            <!-- Things below here are going to be dynamically shown based off of the submission type -->
+            <div class="form-group">
+                <label class="col-md-3 control-label">Upload Files:</label>
+                <div class="col-md-8">
+                    <input class="btn" type="file" name="project-files" multiple="multiple" />
+                </div>
+            </div>
+            <div py:if="project.assets" class="form-group">
+                <label class="col-md-3 control-label">Current Files (check file to remove):</label>
+                <div class="col-md-8">
 
-                        <!--
-                        <label class="col-md-3 control-label">Current Files (check file to remove):</label>
-                        <div class="col-md-8">
-                            <label py:for="asset in project.assets"><input type="checkbox" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}</label>
-                        </div>
-                        -->
+                    <table class="table table-hover">
+                        <!-- And now things are starting to get really ugly -->
+                        <tr py:for="i,asset in enumerate(project.assets)">
+                            <td>
+                                <input type="checkbox" name="asset-${i}" value="asset ${asset.assets.asset_id}"/>
+                                <label class="control-label">${asset.assets.name}</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- This makes it easy to get every asset that could've been modified -->
+                <input type="hidden" name="num_assets" value="${len(project.assets)}"/>
+
+                <!--
+                    <label class="col-md-3 control-label">Current Files (check file to remove):</label>
+                    <div class="col-md-8">
+                    <label py:for="asset in project.assets"><input type="checkbox" value="asset ${asset.assets.asset_id}"/>${asset.assets.name}</label>
                     </div>
-                    <!-- End dynamic portion -->
-                    <div class="form-group">
-                        <div class="col-md-8 col-md-offset-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <!-- 
-                            <a class="btn btn-default"
-                               data-toggle="collapse"
-                               aria-expanded="false"
-                               data-target="#profile-display"
-                               data-collapse="#profile-edit">
-                                Cancel</a>
-                            -->
-                        </div>
-                    </div>
-                </form>
+                -->
+            </div>
+            <!-- End dynamic portion -->
+            <div class="form-group">
+                <div class="col-md-8 col-md-offset-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <!--
+                        <a class="btn btn-default"
+                        data-toggle="collapse"
+                        aria-expanded="false"
+                        data-target="#profile-display"
+                        data-collapse="#profile-edit">
+                        Cancel</a>
+                    -->
+                </div>
+            </div>
+        </form>
     </body>
 
     <!-- A footer is added by black magic -->

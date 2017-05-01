@@ -5,19 +5,15 @@
 
     <body py:block="body" py:strip="True">
         <div class="row profile">
-            <!--
-            <div class="col-md-3">
-                <img class="profile-pic" src="/user/${profile.multipass_username}/profile_pic.png" alt="profile picture" width="150" height="150" />
-            </div>
-            -->
             <div id="profile-display-edit" class="col-md-9">
                 <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
                     <h1>${project.name}</h1>
-                    <!-- This looks super derpy right now -->
+                    <p class="team-name">
                     <a href="/team/${project.team_id}">
                         <img class="profile-pic-small" src="/team/${project.team_id}/profile_thumb.png" width="32" height="32" />
                         ${project.team.name}
                     </a>
+                    </p>
                     <p>${project.description}</p>
                     <p py:if="project.repository or project.website">
                     <a href="${project.repository}"
@@ -36,18 +32,8 @@
                     </a>
                     </p>
                     <p py:if="can_edit">
-                        <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
+                    <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
                     </p>
-                    <!--
-                    <p py:if="can_edit">
-                    <button type="button"
-                            class="btn btn-default"
-                            aria-expanded="true"
-                            data-toggle="collapse"
-                            data-target="#profile-edit"
-                            data-collapse="#profile-display">Edit</button>
-                    </p>
-                    -->
                 </div>
             </div>
         </div>
