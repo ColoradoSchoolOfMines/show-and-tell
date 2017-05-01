@@ -10,6 +10,9 @@ import validators
 import os
 
 def can_edit(ident, team):
+    if ident == None:
+        return False
+
     admin_edit = ident.is_admin and helpers.util.from_config_yaml('admin_edit')
     return (ident and ident in team.members) or admin_edit
 
@@ -17,6 +20,7 @@ def can_edit(ident, team):
 @route('/projects/<id>/edit')
 @route('/submit')
 @kajiki_view('edit_project')
+@security_check('logged_in', action="modify a project")
 def new_project(id=None):
     
     user = model.Session.get_identity()
@@ -29,10 +33,11 @@ def new_project(id=None):
         project = model.Project(None, None, None, None)
     else:
         project = db.session.query(model.Project).filter_by(project_id=id).one()
+        
+        if user not in project.team.members:
+            abort(403, 'You are not on the team making this project!')
 
     return {
-        # Yes, this is a hack to get the text area to work properly
-        'empty': '',
         'project': project,
         'teams': user.teams,
         # This is a placeholder for the moment, 
@@ -43,6 +48,7 @@ def new_project(id=None):
 
 # Get the contents submitted from submit a project
 @post('/submit/new')
+@security_check('logged_in')
 def submit_project():
     user = model.Session.get_identity()
 
@@ -130,8 +136,10 @@ def view_project(id):
     }
 
 from zipfile import ZipFile
+from io import BytesIO
 
 @get('/projects/<id>/download')
+@security_check('admin')
 def download_project(id):
 
     project = db.session.query(model.Project).filter_by(project_id=id).first()
@@ -162,5 +170,8 @@ def download_project(id):
             archive.write(asset_path, asset.name)
 
         archive.close()
+
+        blep = open(archive_path, 'rb')
+        archive_file = BytesIO(blep.read())
 
         return static_file(archive_name, root=root_path, download=download_name)

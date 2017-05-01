@@ -5,11 +5,6 @@
 
     <body py:block="body" py:strip="True">
         <div class="row profile">
-            <!--
-            <div class="col-md-3">
-                <img class="profile-pic" src="/user/${profile.multipass_username}/profile_pic.png" alt="profile picture" width="150" height="150" />
-            </div>
-            -->
             <div id="profile-display-edit" class="col-md-9">
                 <div id="profile-display" aria-expanded="true" class="collapse in profile-display">
                     <h1>${project.name}</h1>
@@ -35,19 +30,9 @@
                         ${util.glyphicon('globe')} ${project.website}
                     </a>
                     </p>
-                    <p py:if="can_edit">
-                        <a type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
-                    </p>
-                    <!--
-                    <p py:if="can_edit">
-                    <button type="button"
-                            class="btn btn-default"
-                            aria-expanded="true"
-                            data-toggle="collapse"
-                            data-target="#profile-edit"
-                            data-collapse="#profile-display">Edit</button>
-                    </p>
-                    -->
+                    <div class="col-md-8 col-md-offset-3">
+                        <a py:if="can_edit" type="button" class="btn btn-default" href="/projects/${project.project_id}/edit">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>
