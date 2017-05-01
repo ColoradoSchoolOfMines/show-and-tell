@@ -112,7 +112,7 @@ def submit_project():
                 # Make the cross-reference between the new asset and the project
                 xref = model.association_tables.ProjectAsset()
                 xref.assets = model.Asset(file.filename, file.filename.split('.')[1], file_path)
-                xref.role = "This is currently defunct"
+                xref.role = " "
                 project.assets.append(xref)
                 
     db.session.add(project)

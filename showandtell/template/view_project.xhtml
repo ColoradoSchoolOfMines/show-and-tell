@@ -42,7 +42,7 @@
             <table class="table table-hover">
                 <tr>
                     <th>Asset Name</th>
-                    <th>Asset Role</th>
+                    <!--<th>Asset Role</th>-->
                 </tr>
 
                 <div py:if="project.assets">
@@ -50,9 +50,11 @@
                         <td>
                             ${asset.assets.name}
                         </td>
+                        <!--
                         <td>
                             ${asset.role}
                         </td>
+                        -->
                     </tr>
                 </div>
                 <div py:if="not project.assets">
