@@ -4,7 +4,7 @@
 Sumbit Project Controller
 """
 
-from bottle import route, get, post, request, redirect, static_file, abort
+from bottle import route, get, post, request, redirect, static_file, abort, response
 from showandtell import db, kajiki_view, helpers, model, security_check
 import validators
 import os
@@ -157,10 +157,6 @@ def download_project(id):
         archive_name = 'project_assets.zip'
         archive_path = os.path.join(root_path, archive_name)
 
-        # Get rid of the last archive that was created if it exists
-        if os.path.isfile(archive_path):
-            os.remove(archive_path)
-
         archive = ZipFile(archive_path, mode='x')
 
         # Stick all of the assets into the zip
@@ -171,7 +167,14 @@ def download_project(id):
 
         archive.close()
 
-        blep = open(archive_path, 'rb')
-        archive_file = BytesIO(blep.read())
+        # This is a stupid solution, 
+        # but makes it so no zip file is left on disk after the assets are downloaded
+        zip_contents = open(archive_path, 'rb')
+        archive_file = BytesIO(zip_contents.read())
+        zip_contents.close()
+        os.remove(archive_path)
 
-        return static_file(archive_name, root=root_path, download=download_name)
+        response.headers['Content-Type'] = 'application/zip'
+        response.headers["Content-Disposition"] = "attachment; filename={}".format(download_name)
+        return archive_file
+        #return static_file(archive_name, root=root_path, download=download_name)
