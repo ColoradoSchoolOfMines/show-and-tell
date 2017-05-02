@@ -8,6 +8,7 @@ from bottle import route, get, post, request, redirect, static_file, abort, resp
 from showandtell import db, kajiki_view, helpers, model, security_check
 import validators
 import os
+import uuid
 
 def can_edit(ident, team):
     if ident == None:
@@ -153,8 +154,8 @@ def download_project(id):
     # Yes, this is very ugly
     # I'm very sorry
     else:
-        download_name = project.name + '.zip'
-        archive_name = 'project_assets.zip'
+        download_name = '-'.join(project.name.split()) + '.zip'
+        archive_name = str(uuid.uuid4())
         archive_path = os.path.join(root_path, archive_name)
 
         archive = ZipFile(archive_path, mode='x')
