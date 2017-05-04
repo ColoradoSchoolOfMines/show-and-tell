@@ -89,20 +89,19 @@ def submit_project():
    
     project.repository = repository
 
-    # Remove any selected files from the project
-    num_assets = request.forms.get('num_assets')
-    if num_assets:
-        for i in range(int(num_assets)):
-            cur_asset = request.forms.get('asset-' + str(i))
-            
-            # Get the assets the user selected and delete them
-            if cur_asset:
-                # Convert the string into the asset id
-                cur_asset = int(cur_asset.split()[-1])
+    # Remove any un-selected files from the project
+    asset_num = 0
+    while True:
+        cur_asset = request.forms.get('asset-' + str(asset_num))
+        if cur_asset is None: break
+        if request.forms.get('include-' + str(asset_num)) is None:
+            # Convert the string into the asset id
+            cur_asset = int(cur_asset)
 
-                asset = db.session.query(model.association_tables.ProjectAsset).filter_by(asset_id=cur_asset).one()
-                helpers.util.delete_asset(asset.assets.filename)
-                project.assets.remove(asset)
+            asset = db.session.query(model.association_tables.ProjectAsset).filter_by(asset_id=cur_asset).one()
+            helpers.util.delete_asset(asset.assets.filename)
+            project.assets.remove(asset)
+        asset_num += 1
             
     # Add any new files that were uploaded to the project
     if project_files:

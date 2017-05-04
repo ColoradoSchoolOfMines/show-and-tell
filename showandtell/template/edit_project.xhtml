@@ -87,21 +87,19 @@
                 </div>
             </div>
             <div py:if="project.assets" class="form-group">
-                <label class="col-md-3 control-label">Current Files (check file to remove):</label>
+                <label class="col-md-3 control-label">Current Files:</label>
                 <div class="col-md-8">
                     <table class="table table-hover">
                         <!-- And now things are starting to get really ugly -->
                         <tr py:for="i,asset in enumerate(project.assets)">
                             <td>
-                                <input type="checkbox" name="asset-${i}" value="asset ${asset.assets.asset_id}"/>
+                                <input type="hidden" name="asset-${i}" value="${asset.assets.asset_id}"/>
+                                <input type="checkbox" name="include-${i}" checked="checked"/>
                                 <label class="control-label">${asset.assets.name}</label>
                             </td>
                         </tr>
                     </table>
                 </div>
-
-                <!-- This makes it easy to get every asset that could've been modified -->
-                <input type="hidden" name="num_assets" value="${len(project.assets)}"/>
 
             </div>
             <div class="form-group">

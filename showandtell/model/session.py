@@ -39,10 +39,10 @@ class Session(Base):
             .filter_by(session_cookie=request.get_cookie('session_token'))\
             .first()
 
-        if user_session.expires_on < datetime.datetime.now():
+        if user_session is None or user_session.expires_on < datetime.datetime.now():
             return None
 
-        return None if user_session is None else user_session.user
+        return user_session.user
 
     __tablename__ = 'sessions'
 
