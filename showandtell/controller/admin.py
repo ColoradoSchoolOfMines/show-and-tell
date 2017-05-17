@@ -5,32 +5,15 @@ Admin Page
 """
 
 from bottle import route, post, static_file, request, abort, redirect
-from showandtell import helpers, kajiki_view, db, security_check
+from showandtell import helpers, kajiki_view, db, security_check, logged_in
 from showandtell.model import Project, Team, Session
 
 
 @route('/admin')
 @kajiki_view('admin_panel')
+@logged_in('view the admin panel')
 @security_check('admin')
 def admin_panel():
-    ''' I kinda just left this here
-    # TODO: Change this to pull the actual data
-    t = Team('Mehtabyte')
-    algobowl = Project(t, 'AlgoBowl',
-                       'First place Spring 2017 AlgoBOWL project',
-                       'shell_script')
-    algobowl.status = 'verified'
-    algobowl.project_id = 10
-
-    dp = Project(t, 'Dynamic Programming', 'Cool project', 'shell_script')
-    dp.project_id = 1
-
-    sat = Project(t, 'Show and Tell', 'this', 'website',
-                  website='https://showandtell.mines.edu')
-    sat.status = 'rejected'
-    sat.project_id = 8
-    projects = [algobowl, dp, sat]
-    '''  
     projects = db.session.query(Project).all()
 
     # Sort the projects putting unverified before rejected before verified
@@ -44,6 +27,7 @@ def admin_panel():
 
 
 @route('/admin/<project_id>/verify')
+@logged_in('view the admin panel')
 @security_check('admin')
 def verify_project(project_id):
     project = Project.get_by_id(project_id)
@@ -53,6 +37,7 @@ def verify_project(project_id):
 
 
 @post('/admin/<project_id>/reject')
+@logged_in('view the admin panel')
 @security_check('admin')
 def reject_project(project_id):
     reason = request.forms.get('reason')

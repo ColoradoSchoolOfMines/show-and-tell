@@ -10,7 +10,7 @@ import functools as ft
 import operator
 
 from bottle import route, get, post, request, redirect, static_file, abort
-from showandtell import db, kajiki_view, helpers, model, security_check
+from showandtell import db, kajiki_view, helpers, model, security_check, logged_in
 
 def can_edit(ident, user):
     if ident == None:
@@ -51,6 +51,7 @@ def user_profile(username):
 
 @post('/user/<username>/edit')
 @security_check('same_user')
+@logged_in('edit a user team')
 def do_user_edit(username):
     profile = db.session.query(model.Person)\
         .filter_by(multipass_username=username).one()

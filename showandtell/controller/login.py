@@ -45,8 +45,7 @@ def do_login():
         db.session.commit()
 
         # Send the cookie back
-        response.set_cookie('session_token', str(session_token),
-                            expires=user_session.expires_on)
+        response.set_cookie('session_token', str(session_token), expires=user_session.expires_on)
 
         redirect('/user/%s' % username)
     else:

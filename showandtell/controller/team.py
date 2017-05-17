@@ -5,7 +5,7 @@ Team Controller
 """
 
 from bottle import route, get, post, request, redirect, static_file, abort
-from showandtell import db, kajiki_view, helpers, model, security_check
+from showandtell import db, kajiki_view, helpers, model, security_check, logged_in
 import validators
 import os
 
@@ -45,7 +45,7 @@ def team_profile(id):
 
 
 @post('/team/new')
-@security_check('logged_in', action='create a team')
+@logged_in('create a team')
 def team_profile_new():
     user = model.Session.get_identity()
     name = request.forms.get('name')
@@ -64,6 +64,7 @@ def team_profile_new():
 
 
 @post('/team/<id>/edit')
+@logged_in('edit a team')
 def do_edit_team(id):
     (team, user) = query_team(id, edit=True)
 
@@ -124,6 +125,7 @@ def remove_member(uid, team):
         abort(400, 'Person #%s does not exist' % uid)
 
 
+@logged_in('edit a team')
 @post('/team/<id>/members')
 def mod_members(id):
     (team, user) = query_team(id, edit=True)
