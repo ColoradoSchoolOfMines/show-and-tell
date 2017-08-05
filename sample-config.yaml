@@ -1,5 +1,5 @@
 db: postgresql://localhost/showandtell
 mpapi_base: https://mastergo.mines.edu/mpapi/
-app_name: Show and Tell
+app_name: Mines ACM
 asset_save_location: /tmp/sat-assets
 admin_edit: false

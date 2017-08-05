@@ -16,7 +16,7 @@ from showandtell import helpers
 
 
 def copyright_holder():
-    return 'Jonathan Sumner Evans, Daichi Jameson, and Sam Sartor'
+    return 'Mines ACM Student Chapter'
 
 
 def copyright_year(start_year):
