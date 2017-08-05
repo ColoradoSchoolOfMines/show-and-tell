@@ -27,6 +27,9 @@
                 <div class="collapse navbar-collapse" id="navbar-content">
                     <ul class="nav navbar-nav">
                         <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="/">Home</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='schedule']}"><a href="/schedule">Schedule</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='mailing_list']}"><a href="/mailinglist">Mailing List</a></li>
+                        <li class="${('', 'active')[self.defined('page') and page=='contact']}"><a href="/contact">Contact</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <form class="navbar-form navbar-left search-form" method="get" action="/search" role="search">

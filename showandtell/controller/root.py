@@ -15,6 +15,24 @@ def index():
     return {'page': 'index'}
 
 
+@route('/schedule')
+@kajiki_view('schedule')
+def schedule():
+    return {'page': 'schedule'}
+
+
+@route('/mailinglist')
+@kajiki_view('mailing_list')
+def mailing_list():
+    return {'page': 'mailing_list'}
+
+
+@route('/contact')
+@kajiki_view('contact')
+def contact():
+    return {'page': 'contact'}
+
+
 @route('/resources/<filepath:path>')
 def static(filepath):
     """
