@@ -37,6 +37,7 @@ An application to allow CS majors to show off their CS projects on the ACM TV in
         markupsafe
         Pillow
         requests
+        psycopg2
 
 8. Run `compass compile`
 
